@@ -7,6 +7,6 @@ Nombres:                          Rol:
 
 Tutor: Benjamin Daza
 
-wiki:
+wiki:https://github.com/not-nen/GRUPO24-2025-PROYINF.wiki.git
 
 video cliente: https://aula.usm.cl/mod/resource/view.php?id=6926137
