@@ -1,9 +1,9 @@
 # GRUPO24-2025-PROYINF
 Integrantes:
 - Miguel Salamanca 202373564-7
--Alejandro Caceres 202373520-5
--Benjamin Caro 202304575-6
--Cristobal Barahona 202373545-0
+- Alejandro Caceres 202373520-5
+- Benjamin Caro 202304575-6
+- Cristobal Barahona 202373545-0
 
 Tutor: Benjamin Daza
 
