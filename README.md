@@ -7,6 +7,6 @@ Integrantes:
 
 Tutor: Benjamin Daza
 
-wiki: https://github.com/not-nen/GRUPO24-2025-PROYINF.wiki.git
+wiki: https://github.com/not-nen/GRUPO24-2025-PROYINF/wiki
 
 video cliente: https://aula.usm.cl/mod/resource/view.php?id=6926137
