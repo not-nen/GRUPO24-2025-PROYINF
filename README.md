@@ -12,4 +12,4 @@ wiki: https://github.com/not-nen/GRUPO24-2025-PROYINF/wiki
 video cliente: https://aula.usm.cl/mod/resource/view.php?id=6926137
 
 Paginas utilizadas en el hito 1:
--Diagrama de contexto
+Diagrama de contexto.- https://drive.google.com/file/d/1FO2Wg35kj8NJbu_6PSnGWUUQWIyZ-8gZ/view?usp=sharing
