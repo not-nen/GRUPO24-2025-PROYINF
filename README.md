@@ -34,6 +34,9 @@ Para eliminar los contenedores:
 docker-compose down -v
 ```
 
+> [!IMPORTANT]  
+> En windows, **Docker Desktop** debe estar abierto para que todo funcione como corresponde.
+
 ### Requerimientos
 
 Se necesita:
@@ -45,4 +48,5 @@ Se necesita:
 
 # Hito 1
 - [Diagrama de contexto](https://drive.google.com/file/d/1FO2Wg35kj8NJbu_6PSnGWUUQWIyZ-8gZ/view?usp=sharing)
+
 - [Modelo de dominio](www.plantuml.com/plantuml/dpng/VLHDQnmn3BtxLvWz5XAQwvmIDYdjeJGafTUYsDgDYcqDjhoaM_hVkp6UZ9ZCzh8h2tr8J-_DTH78KcCmp-JHHfHdziKOumAKOhU1C0dQFyRQ2vkhjF_4yIbZCp42XMO91jnnOlDtIdxaG8wa-fw-G_SCpNAG83GhSXBkWU2v-SO0H_wA1Kjx2XHum1rcJ8vw6XO1hrhTigiHa_0NZqd8Wr-EdFcdduAMIy288P3dCXVyjdte5GHVXEzU90Fr-IZ27bDtWPcJVa0W3uuulTiuOwdXRKEF0Y6WwdTtW51rQd7SfqjqmF10MFRS8HCww5dlCnQ1o2spGteEo9jKpq681UCJXy9w-4L5Lp49d4A5zAMtbGLwMigyI3fWSXG9fpSbmTndSZ2Id9de7lRdPz4aWYgSwTZWczDl3bHuoqyPqh4DfojDEAfIYhWKQvYEiTR_5Ql_i5NHQ8Uv8zFnOu6x8XJ1Tobm4VxE0c7bHWvmhSUXyUmp556jFb6Ey1uk5FQiuMrT2EF8ZnY2FY8doI0Jv48ZJwwvw3RZ6ypJns5pjR4N5tRpyVBomqQfVh0P8T0HpEoROgzQx8fi1ml-LqroDachREXGhCLkjAO6Y-tHPVIkxw97a_yfvrNYU0l2nPX9PNhTawLaCrW_FK25wy9TAOEbv4BzZQQz5mWstW-suCc0BITTIyKj23xOn48xSh1-6CLgTPdPkHYqCtUmO-QH4sg8DG0pRGQxnuGPpEHP13Q2jhsQPTglljVRceFbJ7jAOCmr9bzZ-0S0)
