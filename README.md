@@ -19,7 +19,7 @@ Para correr los contenedores (una vez ya construidos):
 docker-compose up
 ```
 
-Si no quieres ver la terminar de los contenedores:
+Si no quieres ver la terminal de los contenedores:
 ```bash
 docker-compose up -d
 ```
