@@ -1,4 +1,4 @@
-let Nav = () => {
+let Navbar = () => {
     return (
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -28,4 +28,4 @@ let Nav = () => {
 }
 
 
-export default Nav;
+export default Navbar;

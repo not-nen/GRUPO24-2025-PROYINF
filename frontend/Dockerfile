@@ -5,8 +5,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
-
 ENV CHOKIDAR_USEPOLLING=true
 
-CMD ["npm", "start"]
+CMD ["npm", "start", "--", "--host","0.0.0.0"]

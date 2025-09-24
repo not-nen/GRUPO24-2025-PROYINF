@@ -7,14 +7,30 @@
 
 **Tutor:** Benjamin Daza
 
+## URLs
+
+- **Frontend (React)**: http://localhost:3000
+
+- **Backend (Node)**: http://localhost:5000
+
+- **pgAdmin**: http://localhost:8081
+    - Usuario: admin@admin.com
+    - Contraseña: admin
+
 ## Instrucciones
 
 Para construir los contenedores:
 ```bash
+docker-compose build
+```
+
+o si quieres consturirlos e iniciarlos:
+
+```bash
 docker-compose up --build
 ```
 
-Para correr los contenedores (una vez ya construidos):
+Para iniciar los contenedores (una vez ya construidos):
 ```bash
 docker-compose up
 ```
@@ -33,6 +49,9 @@ Para eliminar los contenedores:
 ```bash
 docker-compose down -v
 ```
+
+> [!IMPORTANT]  
+> En windows, **Docker Desktop** debe estar abierto para que todo funcione como corresponde.
 
 ### Requerimientos
 

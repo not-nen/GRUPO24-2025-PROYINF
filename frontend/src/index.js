@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 // import App from './App';
-import Nav from './components/Nav';
+import Navbar from './components/Navbar';
 import Main from './components/Main';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <>
-        <Nav/>
+        <Navbar/>
         <Main/>
     </>
 );

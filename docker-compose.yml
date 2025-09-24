@@ -5,10 +5,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app:cached
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_INTERVAL=100
     stdin_open: true
     tty: true
     depends_on:
@@ -20,9 +22,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./backend:/app
+      - ./backend:/app:cached
       - /app/node_modules
-    working_dir: /app/node
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/mydb
     depends_on:
@@ -31,7 +32,7 @@ services:
   db:
     image: postgres:17.6
     container_name: postgres_db
-    restart: always
+    restart: on-failure
     ports:
       - "5432:5432"
     environment:
@@ -40,6 +41,21 @@ services:
       - POSTGRES_DB=mydb
     volumes:
       - db_data:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: on-failure
+    ports:
+      - "8081:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=False
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - db
 
 volumes:
   db_data:
