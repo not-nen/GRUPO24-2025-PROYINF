@@ -52,7 +52,7 @@ Para detener y eliminar los contenedores, junto consu red creada:
 docker-compose down
 ```
 
-Para detener y eliminar los contenedores, junto consu red creada y volumenes asociados:
+Para detener y eliminar los contenedores, junto con su red creada y volumenes asociados:
 ```bash
 docker-compose down -v
 ```
@@ -75,3 +75,4 @@ Se necesita:
     - Usuario: admin@admin.com
 
     - Contraseña: admin
+
