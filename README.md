@@ -26,28 +26,33 @@ Para construir los contenedores:
 docker-compose build
 ```
 
-o si quieres consturirlos e iniciarlos:
+Para levantar los contenedores (una vez ya construidos):
+```bash
+docker-compose up
+```
+
+o si quieres consturirlos y levantarlos:
 
 ```bash
 docker-compose up --build
 ```
 
-Para iniciar los contenedores (una vez ya construidos):
-```bash
-docker-compose up
-```
-
-Si no quieres ver la terminal de los contenedores:
+Para levantarlos en segundo plano, sin ver los logs de los contenedores:
 ```bash
 docker-compose up -d
 ```
 
-Para parar los contenedores:
+Para detener los contenendores:
+```bash
+docker-compose stop
+```
+
+Para detener y eliminar los contenedores, junto consu red creada:
 ```bash
 docker-compose down
 ```
 
-Para eliminar los contenedores:
+Para detener y eliminar los contenedores, junto consu red creada y volumenes asociados:
 ```bash
 docker-compose down -v
 ```
@@ -68,4 +73,5 @@ Se necesita:
 
 - **pgAdmin**: http://localhost:8081
     - Usuario: admin@admin.com
+
     - Contraseña: admin
