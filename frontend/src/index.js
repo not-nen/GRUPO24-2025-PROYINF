@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
 
@@ -8,7 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import App from './App';
 import Navbar from './components/Navbar';
 
-document.body.setAttribute("data-bs-theme","black");
+// document.body.setAttribute("data-bs-theme","black");
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

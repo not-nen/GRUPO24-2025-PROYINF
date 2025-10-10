@@ -31,7 +31,7 @@ Para levantar los contenedores (una vez ya construidos):
 docker-compose up
 ```
 
-o si quieres consturirlos y levantarlos:
+o si quieres construirlos y levantarlos:
 
 ```bash
 docker-compose up --build
