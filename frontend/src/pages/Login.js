@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { formatearRut } from '../js/formatoRut';
+import Input from '../components/Input';
 
 let Login = () => {
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
@@ -9,9 +10,15 @@ let Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleRut = (rut) => {
+    const handleRut = (e) => {
+        setError('');
+        const rut = e.target.value;
         const rutFormateado = formatearRut(rut);
         setRut(rutFormateado);
+    }
+    const handlePassword = (e) => {
+        setError('');
+        setPassword(e.target.value);
     }
 
     const handleSubmit = async (e) => {
@@ -44,16 +51,24 @@ let Login = () => {
     return (
         <div className="container">
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label for="rut" className="form-label">Rut</label>
-                    <input className="form-control" id="rut" placeholder="11.111.111-1" value={rut} onChange={(e) => handleRut(e.target.value)} maxLength={12} required></input>
-                </div>
-
-                <div className="mb-3">
-                    <label for="password" className="form-label">Contraseña</label>
-                    <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} maxLength={32} required></input>
-                </div>
-
+                <Input
+                    id="rut"
+                    value={rut}
+                    setValue={handleRut}
+                    label="Rut"
+                    required
+                    maxLength={12}
+                    placeholder="11.111.111-1"
+                />
+                <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    setValue={handlePassword}
+                    label="Contraseña"
+                    required
+                    maxLength={32}
+                />
                 {error && <p className="form-text">{error}</p>}
 
                 <button type="submit" className="btn btn-primary">Submit</button>

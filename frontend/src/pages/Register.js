@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { formatearRut } from '../js/formatoRut';
 
+import Input from '../components/Input';
+
 let Register = () => {
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
 
@@ -13,9 +15,31 @@ let Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleRut = (rut) => {
+    const handleNombre = (e) => {
+        setError('');
+        setNombre(e.target.value);
+    }
+    const handleApellido = (e) => {
+        setError('');
+        setApellido(e.target.value);
+    }
+    const handleEmail = (e) => {
+        setError('');
+        setEmail(e.target.value);
+    }
+    const handleRut = (e) => {
+        setError('');
+        const rut = e.target.value;
         const rutFormateado = formatearRut(rut);
         setRut(rutFormateado);
+    }
+    const handlePassword = (e) => {
+        setError('');
+        setPassword(e.target.value);
+    }
+    const handleConfirmPassword = (e) => {
+        setError('');
+        setConfirmPassword(e.target.value);
     }
     
     const handleSubmit = async (e) => {
@@ -49,35 +73,60 @@ let Register = () => {
     return (
         <div className="container">
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label for="rut" className="form-label">Rut</label>
-                    <input className="form-control" id="rut" placeholder="11.111.111-1" value={rut} onChange={(e) => handleRut(e.target.value)} maxLength={12} required></input>
-                </div>
+                <Input
+                    id="rut"
+                    label="RUT"
+                    value={rut}
+                    setValue={handleRut}
+                    required
+                    maxLength={12}
+                    placeholder="11.111.111-1"
+                />
 
-                <div className="mb-3">
-                    <label for="nombre" className="form-label">Nombre</label>
-                    <input className="form-control" id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required></input>
-                </div>
+                <Input
+                    id="nombre"
+                    label="Nombre"
+                    value={nombre}
+                    setValue={handleNombre}
+                    required
+                />
 
-                <div className="mb-3">
-                    <label for="apellido" className="form-label">Apellido</label>
-                    <input className="form-control" id="apellido" value={apellido} onChange={(e) => setApellido(e.target.value)} required></input>
-                </div>
+                <Input
+                    id="apellido"
+                    label="Apellido"
+                    value={apellido}
+                    setValue={handleApellido}
+                    required
+                />
 
-                <div className="mb-3">
-                    <label for="email" className="form-label">Correo</label>
-                    <input type="email" className="form-control" id="email" aria-describedby="emailHelp" value={email} onChange={(e) => setEmail(e.target.value)} required></input>
-                </div>
+                <Input
+                    id="email"
+                    label="Correo"
+                    value={email}
+                    setValue={handleEmail}
+                    type="email"
+                    required
+                />
 
-                <div className="mb-3">
-                    <label for="password" className="form-label">Contraseña</label>
-                    <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} maxLength={32} required></input>
-                </div>
+                <Input
+                    id="password"
+                    label="Contraseña"
+                    value={password}
+                    setValue={handlePassword}
+                    type="password"
+                    maxLength={32}
+                    required
+                />
 
-                <div className="mb-3">
-                    <label for="confirm_password" className="form-label">Contraseña</label>
-                    <input type="password" className="form-control" id="confirm_password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} maxLength={32} required></input>
-                </div>
+                <Input
+                    id="confirm_password"
+                    label="Confirmar contraseña"
+                    value={confirmPassword}
+                    setValue={handleConfirmPassword}
+                    type="password"
+                    maxLength={32}
+                    required
+                />
 
                 {error && <p className="form-text">{error}</p>}
 
