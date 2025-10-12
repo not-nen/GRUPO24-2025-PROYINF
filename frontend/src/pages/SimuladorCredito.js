@@ -22,14 +22,14 @@ let SimuladorCredito = () => {
     const [ plazo, setPlazo ] = useState('');
     const [ plazoCustom, setPlazoCustom ] = useState('');
     const [ primerPago, setPrimerPago ] = useState('');
+    const [ renta, setRenta ] = useState('');
     const [ error, setError ] = useState('');
 
-    const hoy = new Date();
-    const min = new Date(hoy.getFullYear(),hoy.getMonth()+1,1);
-    const max = new Date(hoy.getFullYear(),hoy.getMonth()+4,0);
-    max.setDate(Math.min(15,max.getDate()));
+    const [ step, setStep ] = useState(1);
 
     // MONTO
+    // DESDE 500.000 A 100.000.000
+    // MOMENTANEO PARA PROBAR
     const MIN_MONTO = 500000;
     const MAX_MONTO = 100000000;
     const getMontoNumber = (value) => Number(value.toString().replace(/\D/g, ''));
@@ -66,6 +66,8 @@ let SimuladorCredito = () => {
     }
 
     // PLAZO
+    // DE 6 A 60 MESES
+    // MOMENTANEO PARA PROBAR
     const MIN_PLAZO = 6;
     const MAX_PLAZO = 60;
     let checkPlazo = (plazo) => !(plazo < MIN_PLAZO || plazo > MAX_PLAZO);
@@ -82,13 +84,62 @@ let SimuladorCredito = () => {
     }
 
     // PRIMER PAGO
+    // DESDE LA FECHA ACTUAL, SE PUEDE PAGAR DESDE EL PRIMER DIA DEL PROXIMO MES O HASTA LA QUINCENA DENTRO DE 3 MESES
+    // MOMENTANEO PARA PROBAR
+    const hoy = new Date();
+    const min = new Date(hoy.getFullYear(),hoy.getMonth()+1,1);
+    const max = new Date(hoy.getFullYear(),hoy.getMonth()+4,0);
+    max.setDate(Math.min(15,max.getDate()));
+    useEffect(() => {
+        const hoy = new Date();
+        const primerPagoDefault = new Date();
+        primerPagoDefault.setDate(hoy.getDate()+30);
+        setPrimerPago(primerPagoDefault.toISOString().split("T")[0]);
+    }, []);
     const handlePrimerPago = (e) => {
         setError('');
         setPrimerPago(e.target.value);
     }
 
+    // RENTA
+    const handleRenta = (e) => {
+        setError('');
+        setRenta(e.target.value);
+    }
+
     // SUBMIT
-    const handleSubmit = (e) => {
+    const rangeRenta = [
+        500_000,
+        1_500_000,
+        3_000_000,
+        6_000_000
+    ]
+    let optionsRenta = [];
+    for (let i = 0; i <= rangeRenta.length; i++) {
+        const minRenta = i === 0 ? null : rangeRenta[i-1];
+        const maxRenta = i === rangeRenta.length ? null : rangeRenta[i];
+        if (minRenta === null) {
+            optionsRenta.push({
+                value: `${maxRenta}`,
+                label: `Hasta ${getMontoStr(maxRenta)}`
+            });
+            continue;
+        }
+        if (maxRenta === null) {
+            optionsRenta.push({
+                value: `${minRenta}`,
+                label: `Mas de ${getMontoStr(minRenta)}`
+            });
+            continue;
+        }
+        optionsRenta.push({
+            value: `${(maxRenta + minRenta) / 2}`,
+            label: `Desde ${getMontoStr(minRenta)} hasta ${getMontoStr(maxRenta)}`
+        });
+    }
+
+    // SUBMIT
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!monto || !plazo) {
             setError("Completa los campos faltantes.");
@@ -98,19 +149,52 @@ let SimuladorCredito = () => {
             setError("Campos rellenados incorrectamente.")
             return;
         }
-        setError('');
-    }
 
-    useEffect(() => {
-        const primerPagoDefault = new Date();
-        primerPagoDefault.setDate(hoy.getDate()+30);
-        setPrimerPago(primerPagoDefault.toISOString().split("T")[0]);
-    }, []);
+        setError('');
+        setStep(2);
+        try {
+            const plazoFinal = plazo === 0 ? plazoCustom : plazo;
+            const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+            const res = await fetch(`${backendUrl}/api/simular/credito-consumo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    renta: renta,
+                    monto: monto,
+                    plazo: plazoFinal,
+                    pago: primerPago
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error || 'Error al simular credito.');
+            }
+            setError(data.msg);
+
+        } catch (err) {
+            setError(err.message);
+        }
+
+
+    }
 
     return (
         <div className="container">
             <form onSubmit={(e) => {handleSubmit(e)}}> 
                 <div>
+                    <p>{step}</p>
+                    <Select
+                        id="renta"
+                        value={renta}
+                        setValue={handleRenta}
+                        label="Renta"
+                        options={optionsRenta}
+                        textHelp="Aproximado de cuanto ganas mensualmente."
+                        required
+                    />
+
                     <Input
                         id="monto"
                         value={monto}

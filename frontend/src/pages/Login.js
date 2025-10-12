@@ -4,8 +4,6 @@ import { formatearRut } from '../js/formatoRut';
 import Input from '../components/Input';
 
 let Login = () => {
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-
     const [rut, setRut] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -25,6 +23,7 @@ let Login = () => {
         e.preventDefault();
 
         try {
+            const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
             const res = await fetch(`${backendUrl}/api/auth/login`, {
                 method: 'POST',
                 headers: {

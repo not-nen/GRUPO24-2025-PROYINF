@@ -17,8 +17,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>} />
                 <Route path="/about" element={<About/>} />
-                <Route path="/simular-credito" element={<SimuladorCredito/>} />
-                <Route path="/solicitar-credito" element={<SolicitarCredito/>} />
+                <Route path="/simular-credito-de-consumo" element={<SimuladorCredito/>} />
+                <Route path="/solicitar-credito-de-consumo" element={<SolicitarCredito/>} />
                 <Route path="/crear-cuenta" element={<Register/>} />
                 <Route path="/iniciar-sesion" element={<Login/>} />
             </Routes>

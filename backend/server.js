@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 
-import router from "./routes/auth.js";
+import { router as authRouter } from "./routes/auth.js";
+import { router as simularRouter } from "./routes/simular.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -15,7 +16,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use("/api/auth", router);
+app.use("/api/auth", authRouter);
+app.use("/api/simular", simularRouter);
 
 app.get("/", (req, res) => {
     res.send("API funcionando.");

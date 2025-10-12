@@ -15,10 +15,10 @@ const Navbar = () => {
                             <a className="nav-link" href="/about">About</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/simular-credito">Simulador Credito</a>
+                            <a className="nav-link" href="/simular-credito-de-consumo">Simulador Credito</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/solicitar-credito">Solicitar Credito</a>
+                            <a className="nav-link" href="/solicitar-credito-de-consumo">Solicitar Credito</a>
                         </li>
                     </ul>
                     <ul className="navbar-nav">
