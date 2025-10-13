@@ -5,23 +5,43 @@ import { db } from "../db.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+import { checkCliente, checkRut } from "../utils/checkInfo.js";
+
 const SECRET = process.env.SECRET_KEY || 'clavesupersecretalolxd';
 
-export let register = async (req,res) => {
-    const { nombre, apellido, email, rut, password, confirmPassword } = req.body;
-    if (!nombre || !apellido || !email || !rut || !password || !confirmPassword) {
-        return res.status(400).json({
-            error: "Faltan datos obligatorios"
-        });
-    }
-
-    if (password !== confirmPassword) {
-        return res.status(400).json({
-            error: "Las contraseñas no coinciden"
-        });
-    }
-
+export const register = async (req,res) => {
     try {
+        const { nombre, apellido, email, rut, password, confirmPassword } = req.body;
+        nombre = nombre ? nombre.trim() : "";
+        apellido = apellido ? apellido.trim() : "";
+        email = email ? email.trim() : "";
+        rut = rut ? rut.trim() : "";
+        password = password ? password.trim() : "";
+        confirmPassword = confirmPassword ? confirmPassword.trim() : "";
+
+        if (!nombre || !apellido || !email || !rut || !password || !confirmPassword) {
+            return res.status(400).json({
+                error: "Faltan datos obligatorios"
+            });
+        }
+
+        if (!checkRut(rut)) {
+            return res.status(400).json({
+                error: "Rut no existe."
+            });
+        }
+        if (checkCliente(rut,email)) {
+            return res.status(400).json({
+                error: "Rut o correo ya pertenece a un cliente."
+            });
+        }
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                error: "Las contraseñas no coinciden"
+            });
+        }
+
         const { rows } = await db.query(`
             SELECT * FROM clientes WHERE rut = $1 OR email = $2
             `,
@@ -49,15 +69,23 @@ export let register = async (req,res) => {
     }
 }
 
-export let login = async (req,res) => {
-    const { rut, password } = req.body;
-    if (!rut || !password) {
-        return res.status(400).json({
-            error: "Faltan datos obligatorios"
-        });
-    }
-
+export const login = async (req,res) => {
     try {
+        const { rut, password } = req.body;
+        rut = rut ? rut.trim() : "";
+        password = password ? password.trim() : "";
+        if (!rut || !password) {
+            return res.status(400).json({
+                error: "Faltan datos obligatorios"
+            });
+        }
+    
+        if (!checkCliente(rut,null)) {
+            return res.status(400).json({
+                error: "Rut no pertenece a un cliente."
+            });
+        }
+
         const { rows } = await db.query(`
             SELECT * FROM clientes WHERE rut = $1
             `,

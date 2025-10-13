@@ -30,8 +30,8 @@ let Login = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    rut,
-                    password
+                    "rut" : rut,
+                    "password" : password
                 })
             });
             const data = await res.json();

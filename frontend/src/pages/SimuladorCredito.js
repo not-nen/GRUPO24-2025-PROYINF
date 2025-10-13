@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Input from "../components/Input";
 import Select from "../components/Select";
 
+import { formatearRut } from '../js/formatoRut'
+
 /*
 
 que se necesita:
@@ -18,6 +20,7 @@ que se necesita:
 
 */
 let SimuladorCredito = () => {
+    const [ rut, setRut ] = useState('');
     const [ monto, setMonto ] = useState('');
     const [ plazo, setPlazo ] = useState('');
     const [ plazoCustom, setPlazoCustom ] = useState('');
@@ -26,6 +29,15 @@ let SimuladorCredito = () => {
     const [ error, setError ] = useState('');
 
     const [ step, setStep ] = useState(1);
+    const [ simulacion, setSimulacion ] = useState({});
+
+    // RUT
+    const handleRut = (e) => {
+        setError('');
+        const rut = e.target.value;
+        const rutFormateado = formatearRut(rut);
+        setRut(rutFormateado);
+    }
 
     // MONTO
     // DESDE 500.000 A 100.000.000
@@ -33,7 +45,8 @@ let SimuladorCredito = () => {
     const MIN_MONTO = 500000;
     const MAX_MONTO = 100000000;
     const getMontoNumber = (value) => Number(value.toString().replace(/\D/g, ''));
-    const getMontoStr = (value) => 'CLP '+value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const getMontoStr = (value) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const getMontoStrBonito = (value) => 'CLP '+value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     let checkMonto = (value) => {
         value = getMontoNumber(value);
         return !(value < MIN_MONTO || value > MAX_MONTO);
@@ -121,24 +134,28 @@ let SimuladorCredito = () => {
         if (minRenta === null) {
             optionsRenta.push({
                 value: `${maxRenta}`,
-                label: `Hasta ${getMontoStr(maxRenta)}`
+                label: `Hasta ${getMontoStrBonito(maxRenta)}`
             });
             continue;
         }
         if (maxRenta === null) {
             optionsRenta.push({
                 value: `${minRenta}`,
-                label: `Mas de ${getMontoStr(minRenta)}`
+                label: `Mas de ${getMontoStrBonito(minRenta)}`
             });
             continue;
         }
         optionsRenta.push({
             value: `${(maxRenta + minRenta) / 2}`,
-            label: `Desde ${getMontoStr(minRenta)} hasta ${getMontoStr(maxRenta)}`
+            label: `Desde ${getMontoStrBonito(minRenta)} hasta ${getMontoStrBonito(maxRenta)}`
         });
     }
+    optionsRenta.push({
+        value: '0',
+        label: "Otro"
+    })
 
-    // SUBMIT
+    // SUBMIT (ENVIAR A SIMULAR A BACKEND)
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!monto || !plazo) {
@@ -153,6 +170,7 @@ let SimuladorCredito = () => {
         setError('');
         setStep(2);
         try {
+            const montoFinal = getMontoNumber(monto);
             const plazoFinal = plazo === 0 ? plazoCustom : plazo;
             const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
             const res = await fetch(`${backendUrl}/api/simular/credito-consumo`, {
@@ -161,103 +179,142 @@ let SimuladorCredito = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    rut: rut,
                     renta: renta,
-                    monto: monto,
+                    monto: montoFinal,
                     plazo: plazoFinal,
                     pago: primerPago
                 })
             });
             const data = await res.json();
+            console.log(data);
             if (!res.ok) {
                 throw new Error(data.error || 'Error al simular credito.');
             }
-            setError(data.msg);
+            setSimulacion(data);
 
         } catch (err) {
             setError(err.message);
         }
-
-
     }
 
     return (
         <div className="container">
-            <form onSubmit={(e) => {handleSubmit(e)}}> 
-                <div>
-                    <p>{step}</p>
-                    <Select
-                        id="renta"
-                        value={renta}
-                        setValue={handleRenta}
-                        label="Renta"
-                        options={optionsRenta}
-                        textHelp="Aproximado de cuanto ganas mensualmente."
-                        required
-                    />
-
-                    <Input
-                        id="monto"
-                        value={monto}
-                        setValue={handleMonto}
-                        label="Monto"
-                        required
-                        textHelp={`Monto debe ser entre ${getMontoStr(MIN_MONTO)} y ${getMontoStr(MAX_MONTO)}`}
-                    />
-
-                    {monto && (!checkMonto(monto)) && 
-                        <div className="form-text text-danger">Ingrese un monto valido.</div>
-                    }
-
-                    <Select
-                        id="plazo"
-                        value={plazo}
-                        setValue={handlePlazo}
-                        label="Plazo"
-                        options={[
-                            { value: '6', label: '6 meses' },
-                            { value: '12', label: '12 meses' },
-                            { value: '24', label: '24 meses' },
-                            { value: '36', label: '36 meses' },
-                            { value: '48', label: '48 meses' },
-                            { value: '60', label: '60 meses' },
-                            { value: '0', label: 'Otro' }
-                        ]}
-                        placeholder="Seleccione un plazo"
-                        required
-                    />
-                    {plazo === '0' && 
+            <p>{step}</p>
+            { step === 1 && (
+                <form onSubmit={(e) => {handleSubmit(e)}}> 
+                    <div>
                         <Input
-                            id="plazoCustom"
-                            value={plazoCustom}
-                            setValue={handlePlazoCustom}
-                            label="Plazo personalizado"
-                            required
-                            textHelp="Ingrese un plazo entre 6 y 60 meses"
+                            id="rut"
+                            value={rut}
+                            setValue={handleRut}
+                            label="Rut"
+                            maxLength={12}
+                            textHelp="Ingresa tu rut solamente si quieres una simulación más personalizada."
+                            placeholder="11.111.111-1"
                         />
-                    }
-                    {plazo === '0' && plazoCustom && (!checkPlazo(plazoCustom)) &&
-                        <div className="form-text text-danger">Ingresa un plazo en meses valido.</div>
-                    }
 
-                    <Input
-                        id="primerPago"
-                        type="date"
-                        value={primerPago}
-                        setValue={handlePrimerPago}
-                        label="Primer pago"
-                        min={min.toISOString().split("T")[0]}
-                        max={max.toISOString().split("T")[0]}
-                        textHelp="Fecha en la que puedes realizar tu primer pago."
-                        required
-                    />
-                </div>
+                        <Select
+                            id="renta"
+                            value={renta}
+                            setValue={handleRenta}
+                            label="Renta"
+                            options={optionsRenta}
+                            textHelp="Aproximado de cuanto ganas mensualmente."
+                            required
+                        />
+
+                        {/* <Input
+                            id="renta"
+                            value={renta}
+                            setValue={handleRenta}
+                            label="Renta"
+                            textHelp="Aproximado de cuanto ganas mensualmente."
+                            required
+                        /> */}
+
+                        <Input
+                            id="monto"
+                            value={monto}
+                            setValue={handleMonto}
+                            label="Monto"
+                            required
+                            textHelp={`Monto debe ser entre ${getMontoStrBonito(MIN_MONTO)} y ${getMontoStrBonito(MAX_MONTO)}`}
+                        />
+
+                        {monto && (!checkMonto(monto)) && 
+                            <div className="form-text text-danger">Ingrese un monto valido.</div>
+                        }
+
+                        <Select
+                            id="plazo"
+                            value={plazo}
+                            setValue={handlePlazo}
+                            label="Plazo"
+                            options={[
+                                { value: '6', label: '6 meses' },
+                                { value: '12', label: '12 meses' },
+                                { value: '24', label: '24 meses' },
+                                { value: '36', label: '36 meses' },
+                                { value: '48', label: '48 meses' },
+                                { value: '60', label: '60 meses' },
+                                { value: '0', label: 'Otro' }
+                            ]}
+                            placeholder="Seleccione un plazo"
+                            required
+                        />
+                        {plazo === '0' && 
+                            <Input
+                                id="plazoCustom"
+                                value={plazoCustom}
+                                setValue={handlePlazoCustom}
+                                label="Plazo personalizado"
+                                required
+                                textHelp="Ingrese un plazo entre 6 y 60 meses"
+                            />
+                        }
+                        {plazo === '0' && plazoCustom && (!checkPlazo(plazoCustom)) &&
+                            <div className="form-text text-danger">Ingresa un plazo en meses valido.</div>
+                        }
+
+                        <Input
+                            id="primerPago"
+                            type="date"
+                            value={primerPago}
+                            setValue={handlePrimerPago}
+                            label="Primer pago"
+                            min={min.toISOString().split("T")[0]}
+                            max={max.toISOString().split("T")[0]}
+                            textHelp="Fecha en la que puedes realizar tu primer pago."
+                            required
+                        />
+                    </div>
+                    <div>
+                        <button type="submit" className="btn btn-primary">Simular</button>
+                        {error && 
+                            <p className="form-text text-danger">{error}</p>
+                        }
+                    </div>
+                </form>
+            )}
+            { step === 2 && (
                 <div>
-                    <button type="submit" className="btn btn-primary">Simular</button>
-                    {error && 
-                        <p className="form-text text-danger">{error}</p>
-                    }
+                    { simulacion && (
+                        <>
+                            <h2>SIMULACION:</h2>
+                            <p>MONTO: {simulacion.monto}</p>
+                            <p>CUOTA MENSUAL: {simulacion.cuotaMensual}</p>
+                            <p>INTERES ANUAL: {simulacion.tasaAnual}</p>
+                            <p>INTERES MENSUAL: {simulacion.tasaMensual}</p>
+                            <p>CAE: {simulacion.CAE}</p>
+                            <p>CTC: {simulacion.CTC}</p>
+                            <p>PAGO: {simulacion.pago}</p>
+                        </>
+                    )}
+                    <button className="btn btn-secondary" onClick={(e) => {setStep(1);setSimulacion({});}}>Volver</button>
+                    <button className="btn btn-primary">Solicitar Credito</button>
                 </div>
-            </form>
+            )}
         </div>
     );
 }

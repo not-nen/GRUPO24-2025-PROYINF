@@ -52,12 +52,12 @@ let Register = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    nombre,
-                    apellido,
-                    email,
-                    rut,
-                    password,
-                    confirmPassword
+                    "nombre" : nombre,
+                    "apellido" : apellido,
+                    "email" : email,
+                    "rut" : rut,
+                    "password" : password,
+                    "confirmPassword" : confirmPassword
                 })
             });
             const data = await res.json();
@@ -75,7 +75,7 @@ let Register = () => {
             <form onSubmit={handleSubmit}>
                 <Input
                     id="rut"
-                    label="RUT"
+                    label="Rut"
                     value={rut}
                     setValue={handleRut}
                     required
