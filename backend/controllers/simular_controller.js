@@ -4,6 +4,10 @@ import { getRiesgo, getEdad, getHistorial } from "../utils/getInfo.js";
 const TASA_BASE = 0.12;
 const TASA_MAX = 0.45;
 
+const RIESGO_DEFAULT = 500;
+const HISTORIAL_DEFAULT = 1;
+const EDAD_DEFAULT = 30;
+
 const calcularTasaAnual = (monto,renta,riesgo) => {
     let tasa = TASA_BASE;
     if (monto < 1_000_000) tasa += 0.03;
@@ -25,6 +29,7 @@ const calcularTasaAnual = (monto,renta,riesgo) => {
 
 export const creditoConsumo = async (req,res) => {
     try {
+
         let { rut, renta, monto, plazo, pago } = req.body;
 
         rut = rut ? rut.trim() : "";
@@ -33,20 +38,17 @@ export const creditoConsumo = async (req,res) => {
         plazo = plazo ? Number(plazo.toString().trim()) : 0;
         pago = pago ? pago.trim() : "";
 
-        if (rut) {
-            const rutValido = await checkRut(rut);
-            if (!rutValido) return res.status(400).json({
-                error: "Rut ingresado no pertenece a una persona real."
-            });
-        }
+        if (rut && !(await checkRut(rut))) return res.status(400).json({
+            error: "Rut ingresado no pertenece a una persona real."
+        });
 
-        const riesgo = rut ? await getRiesgo(rut) : 500; 
-        const historial = rut ? await getHistorial(rut) : 1;
+        const riesgo = rut ? await getRiesgo(rut) : RIESGO_DEFAULT; 
+        const historial = rut ? await getHistorial(rut) : HISTORIAL_DEFAULT;
         let tasaAnual = calcularTasaAnual(monto,renta,riesgo);
         if (historial === 1) tasaAnual += 0.05;
         if (historial === 0) tasaAnual += 0.12;
 
-        const edad = rut ? await getEdad(rut) : 30;
+        const edad = rut ? await getEdad(rut) : EDAD_DEFAULT;
         if (edad < 21) tasaAnual += 0.05;
         if (edad > 70) tasaAnual += 0.07;
 

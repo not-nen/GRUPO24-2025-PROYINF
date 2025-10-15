@@ -26,6 +26,7 @@ let SimuladorCredito = () => {
     const [ plazoCustom, setPlazoCustom ] = useState('');
     const [ primerPago, setPrimerPago ] = useState('');
     const [ renta, setRenta ] = useState('');
+    const [ rentaCustom, setRentaCustom ] = useState('');
     const [ error, setError ] = useState('');
 
     const [ step, setStep ] = useState(1);
@@ -56,7 +57,7 @@ let SimuladorCredito = () => {
         const input = e.target;
         const selectionStart = input.selectionStart;
         const value = getMontoNumber(input.value);
-        if (!value || value === 0) {
+        if (!value) {
             setMonto('');
             return;
         }
@@ -118,6 +119,33 @@ let SimuladorCredito = () => {
     const handleRenta = (e) => {
         setError('');
         setRenta(e.target.value);
+        setRentaCustom('');
+    };
+    const handleRentaCustom = (e) => {
+        setError('');
+        const input = e.target;
+        const selectionStart = input.selectionStart;
+        const value = getMontoNumber(input.value);
+        if (!value) {
+            setRentaCustom('');
+            return;
+        }
+
+        const newRenta = getMontoStr(value);
+        let diff = newRenta.length - rentaCustom.length;
+
+        if (value < 0 || value > 1_000_000_000_000_000) {
+            setRentaCustom(rentaCustom);
+            diff = 0;
+        }
+        else setRentaCustom(newRenta);
+
+        requestAnimationFrame(() => {
+            if (diff < 0) diff++;
+            if (diff > 0) diff--;
+            const newPos = Math.max(selectionStart + diff, 0);
+            input.setSelectionRange(newPos,newPos);
+        });
     }
 
     // SUBMIT
@@ -170,8 +198,14 @@ let SimuladorCredito = () => {
         setError('');
         setStep(2);
         try {
+            const rentaFinal = renta === '0' ? rentaCustom : renta;
             const montoFinal = getMontoNumber(monto);
-            const plazoFinal = plazo === 0 ? plazoCustom : plazo;
+            const plazoFinal = plazo === '0' ? plazoCustom : plazo;
+
+            console.log(rentaFinal);
+            console.log(montoFinal);
+            console.log(plazoFinal);
+
             const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
             const res = await fetch(`${backendUrl}/api/simular/credito-consumo`, {
                 method: 'POST',
@@ -180,7 +214,7 @@ let SimuladorCredito = () => {
                 },
                 body: JSON.stringify({
                     rut: rut,
-                    renta: renta,
+                    renta: rentaFinal,
                     monto: montoFinal,
                     plazo: plazoFinal,
                     pago: primerPago
@@ -220,9 +254,20 @@ let SimuladorCredito = () => {
                             setValue={handleRenta}
                             label="Renta"
                             options={optionsRenta}
-                            textHelp="Aproximado de cuanto ganas mensualmente."
+                            textHelp="Rango aproximado de tu renta liquida mensual."
                             required
                         />
+
+                        {renta === '0' && 
+                            <Input
+                                id="rentaCustom"
+                                value={rentaCustom}
+                                setValue={handleRentaCustom}
+                                label="Renta personalizada"
+                                textHelp="Aproximado de tu renta liquida mensual."
+                                required
+                            />
+                        }
 
                         {/* <Input
                             id="renta"
@@ -302,13 +347,13 @@ let SimuladorCredito = () => {
                     { simulacion && (
                         <>
                             <h2>SIMULACION:</h2>
-                            <p>MONTO: {simulacion.monto}</p>
-                            <p>CUOTA MENSUAL: {simulacion.cuotaMensual}</p>
+                            <p>MONTO: {getMontoStrBonito(Number(simulacion.monto))}</p>
+                            <p>CUOTA MENSUAL: {getMontoStrBonito(Number(simulacion.cuotaMensual))}</p>
                             <p>INTERES ANUAL: {simulacion.tasaAnual}</p>
                             <p>INTERES MENSUAL: {simulacion.tasaMensual}</p>
                             <p>CAE: {simulacion.CAE}</p>
-                            <p>CTC: {simulacion.CTC}</p>
-                            <p>PAGO: {simulacion.pago}</p>
+                            <p>CTC: {getMontoStrBonito(Number(simulacion.CTC))}</p>
+                            <p>PRIMER PAGO: {simulacion.pago}</p>
                         </>
                     )}
                     <button className="btn btn-secondary" onClick={(e) => {setStep(1);setSimulacion({});}}>Volver</button>

@@ -6,6 +6,9 @@ export const checkRut = async (rut) => {
 }
 
 export const checkCliente = async (rut, email) => {
+    return false;
+    // retorna directamente false ya que la bdd no esta implementada de momento.
+    
     try {
         rut = rut ? rut.trim() : "";
         email = email ? email.trim() : "";
@@ -35,6 +38,6 @@ export const checkCliente = async (rut, email) => {
 
     } catch (err) {
         console.error("Error verificando cliente: ", err);
-        return false;
+        return true;
     }
 };

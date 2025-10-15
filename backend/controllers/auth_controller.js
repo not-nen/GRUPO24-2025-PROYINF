@@ -11,7 +11,8 @@ const SECRET = process.env.SECRET_KEY || 'clavesupersecretalolxd';
 
 export const register = async (req,res) => {
     try {
-        const { nombre, apellido, email, rut, password, confirmPassword } = req.body;
+        let { nombre, apellido, email, rut, password, confirmPassword } = req.body;
+
         nombre = nombre ? nombre.trim() : "";
         apellido = apellido ? apellido.trim() : "";
         email = email ? email.trim() : "";
@@ -25,12 +26,12 @@ export const register = async (req,res) => {
             });
         }
 
-        if (!checkRut(rut)) {
+        if (!(await checkRut(rut))) {
             return res.status(400).json({
                 error: "Rut no existe."
             });
         }
-        if (checkCliente(rut,email)) {
+        if (await checkCliente(rut,email)) {
             return res.status(400).json({
                 error: "Rut o correo ya pertenece a un cliente."
             });
@@ -71,7 +72,7 @@ export const register = async (req,res) => {
 
 export const login = async (req,res) => {
     try {
-        const { rut, password } = req.body;
+        let { rut, password } = req.body;
         rut = rut ? rut.trim() : "";
         password = password ? password.trim() : "";
         if (!rut || !password) {
@@ -80,7 +81,7 @@ export const login = async (req,res) => {
             });
         }
     
-        if (!checkCliente(rut,null)) {
+        if (!(await checkCliente(rut,null))) {
             return res.status(400).json({
                 error: "Rut no pertenece a un cliente."
             });

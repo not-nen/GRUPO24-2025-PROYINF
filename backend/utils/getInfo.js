@@ -7,7 +7,7 @@ export const getEdad = (rut) => {
 0-1000 -> menor = mas riesgo, mayor = menor riesgo
 */
 export const getRiesgo = (rut) => {
-    return 700;
+    return 1000;
 }
 
 /*
