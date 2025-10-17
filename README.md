@@ -18,6 +18,8 @@
 
 - [Video del cliente](https://aula.usm.cl/mod/resource/view.php?id=6926137)
 
+- [Video primer prototipo](https://usmcl-my.sharepoint.com/:v:/g/personal/acaceres_usm_cl/EbDgcjI5j8RCq2pHBBNNa5cBkJAX_3yPQFF2VGrWmEJ3CQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=9XOcPi)
+
 
 ## Instrucciones
 
@@ -75,5 +77,6 @@ Se necesita:
     - Usuario: admin@admin.com
 
     - Contraseña: admin
+
 
 
