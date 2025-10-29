@@ -71,8 +71,8 @@ Se necesita:
 
 - **pgAdmin**: http://localhost:8081
     - Usuario: admin@admin.com
-
     - Contraseña: admin
+    - DB contraseña: postgres
 
 
 
