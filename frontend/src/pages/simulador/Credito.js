@@ -53,7 +53,7 @@ const Credito = () => {
             validationOnBlur={true}
         >
             {
-                ({ values, handleChange, handleBlur, setFieldValue }) => {
+                ({ values, handleChange, handleBlur, setFieldValue, errors, touched }) => {
                     const handleDinero = (e,field) => {
                         handleChange(e);
                         const input = e.target;
@@ -99,6 +99,8 @@ const Credito = () => {
                                     onBlur={handleBlur}
                                     label="Monto"
                                     textHelp={`Monto debe ser entre ${formatearDineroStrBonito(MIN_MONTO)} y ${formatearDineroStrBonito(MAX_MONTO)}`}
+                                    errors={errors}
+                                    touched={touched}
                                     required
                                 />
                             </div>
@@ -112,6 +114,8 @@ const Credito = () => {
                                     label="Renta"
                                     options={optionsRenta}
                                     textHelp="Rango aproximado de tu renta liquida mensual."
+                                    errors={errors}
+                                    touched={touched}
                                     required
                                 />
 
@@ -124,6 +128,8 @@ const Credito = () => {
                                         onBlur={handleBlur}
                                         label="Renta (otro)"
                                         textHelp="Aproximado de tu renta liquida mensual."
+                                        errors={errors}
+                                        touched={touched}
                                         required
                                     />
                                 }
@@ -137,6 +143,8 @@ const Credito = () => {
                                     label="Plazo"
                                     options={optionPlazo}
                                     placeholder="Seleccione un plazo"
+                                    errors={errors}
+                                    touched={touched}
                                     required
                                 />
 
@@ -149,6 +157,8 @@ const Credito = () => {
                                         onBlur={handleBlur}
                                         label="Plazo (otro)"
                                         textHelp="Ingrese un plazo entre 6 y 60 meses"
+                                        errors={errors}
+                                        touched={touched}
                                         required
                                     />
                                 }
@@ -164,6 +174,8 @@ const Credito = () => {
                                     min={MIN_PRIMER_PAGO.toISOString().split("T")[0]}
                                     max={MAX_PRIMER_PAGO.toISOString().split("T")[0]}
                                     textHelp="Fecha en la que puedes realizar tu primer pago."
+                                    errors={errors}
+                                    touched={touched}
                                     required
                                 />
                             </div>

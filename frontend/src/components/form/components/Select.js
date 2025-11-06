@@ -12,7 +12,11 @@ const Select = ({
     onChange,
     onBlur,
     className = "",
+    errors = {},
+    touched = {},
 }) => {
+    const hasError = touched[name] && errors[name];
+
     return (
         <div className="mb-3">
             {label && (
@@ -25,7 +29,7 @@ const Select = ({
             <select
                 id={id || name}
                 name={name}
-                className={`form-select ${className}`}
+                className={`form-select ${hasError ? "is-invalid" : ""} ${className}`}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -41,15 +45,15 @@ const Select = ({
                 ))}
             </select>
 
-            <ErrorMessage name={name}>
-                {(msg) => <div className="invalid-feedback d-block">{msg}</div>}
-            </ErrorMessage>
-
             {textHelp && (
                 <div id={`${id || name}Help`} className="form-text">
                     {textHelp}
                 </div>
             )}
+
+            <ErrorMessage name={name}>
+                {(msg) => <div className="invalid-feedback d-block">{msg}</div>}
+            </ErrorMessage>
         </div>
     );
 };

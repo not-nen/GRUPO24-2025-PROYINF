@@ -4,6 +4,8 @@ import { useOutletContext } from "react-router-dom";
 
 import { rutSchema } from "./schemas/simuladorSchema";
 
+import Input from "../../components/form/components/Input";
+
 import { formatearRut } from "../../components/form/utils/formatoRut";
 
 const Rut = () => {
@@ -34,7 +36,7 @@ const Rut = () => {
             validateOnBlur={true}
         >
             {
-                ({ values, handleChange, handleBlur, setFieldValue }) => {
+                ({ values, handleChange, handleBlur, setFieldValue, errors, touched }) => {
                     const handleRut = (e) => {
                         handleChange(e);
                         setFieldValue("rut", formatearRut(e.target.value));
@@ -43,18 +45,18 @@ const Rut = () => {
                     return (
                         <Form>
                             <label htmlFor="rut">RUT</label>
-                            <input
+                            <Input
                                 id="rut"
                                 type="text"
                                 name="rut"
                                 placeholder="11.111.111-1"
-                                className="form-control"
                                 value={values.rut}
+                                textHelp="Ingresar tu Rut es opcional."
                                 onChange={handleRut}
                                 onBlur={handleBlur}
+                                errors={errors}
+                                touched={touched}
                             />
-
-                            <ErrorMessage name="rut" className="text-danger" component="div"/>
 
                             <div className="flex gap-2 mt-4">
                                 <button type="submit" className="btn btn-primary">

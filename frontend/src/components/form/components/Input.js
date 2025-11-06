@@ -15,7 +15,11 @@ const Input = ({
     onChange,
     onBlur,
     className = "",
+    errors = {},
+    touched = {},
 }) => {
+    const hasError = touched[name] && errors[name];
+
     return (
         <div className="mb-3">
             {label && (
@@ -30,7 +34,7 @@ const Input = ({
                 name={name}
                 type={type}
                 placeholder={placeholder}
-                className={`form-control ${className}`}
+                className={`form-control ${hasError ? "is-invalid" : ""} ${className}`}
                 maxLength={maxLength}
                 min={min}
                 max={max}
