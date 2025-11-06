@@ -1,9 +1,7 @@
 import { Route, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { simuladorStore } from "./store/simuladorStore";
-import { formatearDineroNumber } from "../../components/form/utils/formatoDinero";
-
+import { defaultData, filterData } from "./store/simuladorStore";
 import { rutSchema, creditoSchema } from "./schemas/simuladorSchema";
 
 import Rut from './Rut';
@@ -16,38 +14,17 @@ const STEPS = ["", "credito-consumo","simulacion"];
 const MainSimulador = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { formData, setField, reset } = simuladorStore();
+
+    const [formData, setFormData] = useState({...defaultData});
 
     const currentPath = window.location.pathname.replace(MAIN_PATH, "").replace(/^\//, "");
     const currentIndex = STEPS.indexOf(currentPath);
 
-    const nextStep = () => {
-        if (currentIndex < STEPS.length -1) navigate(`${MAIN_PATH}/${STEPS[currentIndex + 1]}`);
-    }
-    const prevStep = () => {
-        if (currentIndex > 0) navigate(`${MAIN_PATH}/${STEPS[currentIndex - 1]}`);
-    }
+    const nextStep = () => currentIndex < STEPS.length -1 && navigate(`${MAIN_PATH}/${STEPS[currentIndex + 1]}`);
+    const prevStep = () => currentIndex > 0 && navigate(`${MAIN_PATH}/${STEPS[currentIndex - 1]}`);
 
-    const setFields = (values) => {
-        Object.entries(values).forEach(([key,value]) => {
-            setField(key,value);
-        });
-    }
-
-    const filterData = (values) => {
-        const data = { ...values };
-
-        if (data.renta === "0") data.renta = data.renta_otro;
-        delete data.renta_otro;
-
-        if (data.plazo === "0") data.plazo = data.plazo_otro;
-        delete data.plazo_otro;
-
-        data.monto = formatearDineroNumber(data.monto);
-        data.renta = formatearDineroNumber(data.renta);
-
-        return data;
-    }
+    const setField = (key, value) => setFormData(prev => ({...prev, [key]:value}));
+    const setFields = (values) => setFormData(prev => ({ ...prev, ...values }));
 
     useEffect(() => {
         const stepValidation = async () => {
