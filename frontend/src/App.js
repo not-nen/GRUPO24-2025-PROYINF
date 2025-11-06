@@ -3,24 +3,27 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Main from './pages/Main';
+import Main from './pages/page';
+import Index from './pages/Index';
 import About from './pages/About';
-import SimuladorCredito from './pages/SimuladorCredito';
-import SolicitarCredito from './pages/SolicitarCredito';
+import SimuladorRoutes from './pages/simulador/page';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 function App() {
-
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Main/>} />
-                <Route path="/about" element={<About/>} />
-                <Route path="/simular-credito-de-consumo" element={<SimuladorCredito/>} />
-                <Route path="/solicitar-credito-de-consumo" element={<SolicitarCredito/>} />
-                <Route path="/crear-cuenta" element={<Register/>} />
-                <Route path="/iniciar-sesion" element={<Login/>} />
+                <Route path="/" element={<Main/>}>
+                    <Route index element={<Index/>}/>
+                    <Route path="/about" element={<About/>} />
+                    {SimuladorRoutes()}
+                    <Route path="/crear-cuenta" element={<Register/>} />
+                    <Route path="/iniciar-sesion" element={<Login/>} />
+
+                    <Route path="*" element={<NotFound/>}/>
+                </Route>
             </Routes>
         </BrowserRouter>
     );

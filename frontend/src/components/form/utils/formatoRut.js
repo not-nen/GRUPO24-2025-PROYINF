@@ -1,4 +1,4 @@
-let formatearRut = (rut) => {
+export const formatearRut = (rut) => {
     if (rut.length < 2) return rut;
     if (rut.length > 12) return rut.slice(0, 12);
     let rutLimpio =  rut.replace(/[^0-9kK]/g, '').toUpperCase();
@@ -17,5 +17,3 @@ let formatearRut = (rut) => {
     }
     return aux + '-' + dv;
 }
-
-export { formatearRut };

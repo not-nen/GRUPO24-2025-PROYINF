@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { formatearRut } from '../js/formatoRut';
-import Input from '../components/Input';
+import { formatearRut } from '../components/form/utils/formatoRut';
+import Input from '../components/form/components/Input';
 
 let Login = () => {
     const [rut, setRut] = useState('');

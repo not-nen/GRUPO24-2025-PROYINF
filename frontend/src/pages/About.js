@@ -1,8 +1,6 @@
 let About = () => {
     return (
-        <div className="container">
-            <p>hola</p>
-        </div>
+        <p>hola soy el about</p>
     );
 }
 
