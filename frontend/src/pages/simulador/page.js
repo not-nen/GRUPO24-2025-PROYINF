@@ -51,13 +51,11 @@ const MainSimulador = () => {
 
     useEffect(() => {
         const stepValidation = async () => {
-            console.log("validando");
-
             const { rut, ...resto } = filterData(formData);
 
             if (currentIndex === 0) return;
 
-            if (!(rut === "0" || rutSchema.safeParse(rut).success)) {
+            if (!(rut === "0" || rutSchema.safeParse({rut}).success)) {
                 navigate(MAIN_PATH);
                 return;
             }
