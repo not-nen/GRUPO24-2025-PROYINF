@@ -44,11 +44,14 @@ const Input = ({
                 onBlur={onBlur}
             />
 
-            {textHelp && <div className="form-text">{textHelp}</div>}
-
-            <ErrorMessage name={name}>
-                {(msg) => <div className="invalid-feedback d-block">{msg}</div>}
-            </ErrorMessage>
+            { hasError ? (
+                    <ErrorMessage name={name}>
+                        {(msg) => <div className="invalid-feedback d-block">{msg}</div>}
+                    </ErrorMessage>
+                ) : (
+                    textHelp && <div id={`${id || name}Help`} className="form-text">{textHelp}</div>
+                )
+            }
 
         </div>
     );

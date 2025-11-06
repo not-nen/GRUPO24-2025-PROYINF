@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { formatearDineroStrBonito } from "../../../components/form/utils/formatoDinero";
+
 export const MIN_MONTO = 500_000;
 export const MAX_MONTO = 100_000_000;
 
@@ -19,8 +21,8 @@ const montoValidation = z.coerce.number({
     required_error: "Debes ingresar un monto.",
     invalid_type_error: "El monto no es valido.",
 })
-    .min(MIN_MONTO, `Ingresa un monto superior a ${MIN_MONTO} pesos.`)
-    .max(MAX_MONTO, `Ingresa un monto inferior a ${MAX_MONTO} pesos.`);
+    .min(MIN_MONTO, `Ingresa un monto superior a ${formatearDineroStrBonito(MIN_MONTO)}.`)
+    .max(MAX_MONTO, `Ingresa un monto inferior a ${formatearDineroStrBonito(MAX_MONTO)}.`);
 
 const rentaValidation = z.coerce.number({
     required_error: "Debes ingresar tu renta.",

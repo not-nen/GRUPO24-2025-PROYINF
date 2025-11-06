@@ -1,4 +1,4 @@
-import { db } from "../db.js";
+import { db } from "./db.js";
 
 export const checkRut = async (rut) => {
     // SIMULACION DE VALIDACION DE RUT XD
