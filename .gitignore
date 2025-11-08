@@ -6,3 +6,5 @@ pgdata/
 backups/
 *.dump
 *.backup
+frontend/package-lock.json
+backend/package-lock.json

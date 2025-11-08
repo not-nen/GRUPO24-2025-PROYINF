@@ -48,9 +48,9 @@ const MainSimulador = () => {
     return (
         <>
             <Outlet context={{ formData, setField, navigate, nextStep, prevStep, setFields, filterData }} />
-            <pre>
+            {/* <pre>
                 {JSON.stringify(formData, null, 2)}
-            </pre>
+            </pre> */}
         </>
     );
 };

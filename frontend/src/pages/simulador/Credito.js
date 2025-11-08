@@ -188,9 +188,9 @@ const Credito = () => {
                                     Continuar →
                                 </button>
                             </div>
-                            <pre>
+                            {/* <pre>
                                 {JSON.stringify(values, null, 2)}
-                            </pre>
+                            </pre> */}
                         </Form>
                     )
                 }

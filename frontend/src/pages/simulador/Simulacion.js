@@ -11,7 +11,7 @@ const Simulacion = () => {
     const [dataFetch, setDataFetch] = useState({});
 
     const getSimulacion = async (data) => {
-        const res = await fetch(backendUrl + "/api/simular/credito-consumo", {
+        const res = await fetch(backendUrl + "/api/simulacion", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
