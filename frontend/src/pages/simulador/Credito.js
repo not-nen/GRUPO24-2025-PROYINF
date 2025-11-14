@@ -1,15 +1,22 @@
 import { Formik, Form } from "formik";
 import { useOutletContext } from "react-router-dom";
 
-import Input from "../../components/form/components/Input";
-import Select from "../../components/form/components/Select";
-import { formatearDineroNumber, formatearDineroStr, formatearDineroStrBonito } from "../../components/form/utils/formatoDinero";
-import { optionPlazo, optionsRenta } from "./fields/options";
+import Input from "components/inputs/Input";
+import Select from "components/inputs/Select";
+import { formatearDineroNumber, formatearDineroStr, formatearDineroStrBonito } from "utils/formatoDinero";
+import { optionPlazo, optionsRenta } from "pages/simulador/fields/options";
 
-import { creditoSchema, MAX_PRIMER_PAGO, MIN_PRIMER_PAGO, MIN_MONTO, MAX_MONTO, MAX_PLAZO } from "./schemas/simuladorSchema";
+import FormContainer from "components/containers/FormContainer";
+import InputsContainer from "components/containers/InputsContainer";
+import BtnsContainer from "components/containers/BtnsContainer";
+import FillContainer from "components/containers/FillContainer";
+import PrevStepBtn from "components/subComponents/PrevStepBtn";
+import CreditInput from "components/inputs/CreditInput";
+
+import { MAX_PRIMER_PAGO, MIN_PRIMER_PAGO, MIN_MONTO, MAX_MONTO, MAX_PLAZO } from "pages/simulador/schemas/simuladorSchema";
 
 const Credito = () => {
-    const { formData, nextStep, prevStep, setFields, filterData } = useOutletContext();
+    const { formData, nextStep, prevStep, setFields, handleValidation, schema } = useOutletContext();
 
     const initialValues = {
         monto: formData.monto || "",
@@ -24,32 +31,12 @@ const Credito = () => {
         setFields(values);
         nextStep();
     }
-    const handleVolver = () => {
-        prevStep();
-    };
-
-    const handleValidation = (values) => {
-        const res = creditoSchema.safeParse(filterData(values));
-
-        if (res.success) return {};
-
-        const errors = {};
-        for (const i of res.error.issues) {
-            const path = i.path[0];
-
-            if (path === "monto" && values.monto === "0") errors.monto_otro = i.message;
-            else if (path === "renta" && values.renta === "0") errors.renta_otro = i.message;
-            else if (path === "plazo" && values.plazo === "0") errors.plazo_otro = i.message;
-            else errors[path] = i.message;
-        }
-        return errors;
-    }
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
-            validate={handleValidation}
+            validate={(values) => handleValidation(values,schema)}
             validationOnBlur={true}
         >
             {
@@ -89,109 +76,119 @@ const Credito = () => {
                     }
                     
                     return (
-                        <Form>
-                            <div>
-                                <Input
-                                    id="monto"
-                                    name="monto"
-                                    value={values.monto}
-                                    onChange={(e) => handleDinero(e,"monto")}
-                                    onBlur={handleBlur}
-                                    label="Monto"
-                                    textHelp={`Monto debe ser entre ${formatearDineroStrBonito(MIN_MONTO)} y ${formatearDineroStrBonito(MAX_MONTO)}`}
-                                    errors={errors}
-                                    touched={touched}
-                                    required
-                                />
-                            </div>
-                            <div className="gap-2 mt-4">
-                                <Select
-                                    id="renta"
-                                    name="renta"
-                                    value={values.renta}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    label="Renta"
-                                    options={optionsRenta}
-                                    textHelp="Rango aproximado de tu renta liquida mensual."
-                                    errors={errors}
-                                    touched={touched}
-                                    required
-                                />
-
-                                { values.renta === '0' &&
-                                    <Input
-                                        id="renta_otro"
-                                        name="renta_otro"
-                                        value={values.renta_otro}
-                                        onChange={(e) => handleDinero(e,"renta_otro")}
+                        <FormContainer>
+                            <Form>
+                                <PrevStepBtn onClick={prevStep}/>
+                                <FillContainer/>
+                                <InputsContainer>
+                                    <CreditInput
+                                        id="monto"
+                                        name="monto"
+                                        value={values.monto}
+                                        onChange={(e) => handleDinero(e,"monto")}
                                         onBlur={handleBlur}
-                                        label="Renta (otro)"
-                                        textHelp="Aproximado de tu renta liquida mensual."
+                                        textHelp={`Monto debe ser entre ${formatearDineroStrBonito(MIN_MONTO)} y ${formatearDineroStrBonito(MAX_MONTO)}`}
+                                        errors={errors}
+                                        touched={touched}
+                                    />
+                                    {/* <Input
+                                        id="monto"
+                                        name="monto"
+                                        value={values.monto}
+                                        onChange={(e) => handleDinero(e,"monto")}
+                                        onBlur={handleBlur}
+                                        label="Monto"
+                                        textHelp={`Monto debe ser entre ${formatearDineroStrBonito(MIN_MONTO)} y ${formatearDineroStrBonito(MAX_MONTO)}`}
+                                        errors={errors}
+                                        touched={touched}
+                                        required
+                                    /> */}
+                                </InputsContainer>
+                                <InputsContainer>
+                                    <Select
+                                        id="renta"
+                                        name="renta"
+                                        value={values.renta}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        label="Renta"
+                                        options={optionsRenta}
+                                        textHelp="Rango aproximado de tu renta liquida mensual."
                                         errors={errors}
                                         touched={touched}
                                         required
                                     />
-                                }
 
-                                <Select
-                                    id="plazo"
-                                    name="plazo"
-                                    value={values.plazo}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    label="Plazo"
-                                    options={optionPlazo}
-                                    placeholder="Seleccione un plazo"
-                                    errors={errors}
-                                    touched={touched}
-                                    required
-                                />
+                                    { values.renta === '0' &&
+                                        <Input
+                                            id="renta_otro"
+                                            name="renta_otro"
+                                            value={values.renta_otro}
+                                            onChange={(e) => handleDinero(e,"renta_otro")}
+                                            onBlur={handleBlur}
+                                            label="Renta (otro)"
+                                            textHelp="Aproximado de tu renta liquida mensual."
+                                            errors={errors}
+                                            touched={touched}
+                                            required
+                                        />
+                                    }
 
-                                { values.plazo === '0' &&
-                                    <Input
-                                        id="plazo_otro"
-                                        name="plazo_otro"
-                                        value={values.plazo_otro}
-                                        onChange={handlePlazo}
+                                    <Select
+                                        id="plazo"
+                                        name="plazo"
+                                        value={values.plazo}
+                                        onChange={handleChange}
                                         onBlur={handleBlur}
-                                        label="Plazo (otro)"
-                                        textHelp="Ingrese un plazo entre 6 y 60 meses"
+                                        label="Plazo"
+                                        options={optionPlazo}
+                                        placeholder="Seleccione un plazo"
                                         errors={errors}
                                         touched={touched}
                                         required
                                     />
-                                }
 
-                                <Input
-                                    id="primerPago"
-                                    name="primerPago"
-                                    type="date"
-                                    value={values.primerPago}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    label="Primer pago"
-                                    min={MIN_PRIMER_PAGO.toISOString().split("T")[0]}
-                                    max={MAX_PRIMER_PAGO.toISOString().split("T")[0]}
-                                    textHelp="Fecha en la que puedes realizar tu primer pago."
-                                    errors={errors}
-                                    touched={touched}
-                                    required
-                                />
-                            </div>
-                            <div className="flex gap-2 mt-4">
-                                <button type="button" className="btn btn-outline-secondary" onClick={handleVolver}>
-                                    ← Volver
-                                </button>
+                                    { values.plazo === '0' &&
+                                        <Input
+                                            id="plazo_otro"
+                                            name="plazo_otro"
+                                            value={values.plazo_otro}
+                                            onChange={handlePlazo}
+                                            onBlur={handleBlur}
+                                            label="Plazo (otro)"
+                                            textHelp="Ingrese un plazo entre 6 y 60 meses"
+                                            errors={errors}
+                                            touched={touched}
+                                            required
+                                        />
+                                    }
 
-                                <button type="submit" className="btn btn-primary">
-                                    Continuar →
-                                </button>
-                            </div>
-                            {/* <pre>
-                                {JSON.stringify(values, null, 2)}
-                            </pre> */}
-                        </Form>
+                                    <Input
+                                        id="primerPago"
+                                        name="primerPago"
+                                        type="date"
+                                        value={values.primerPago}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        label="Primer pago"
+                                        min={MIN_PRIMER_PAGO.toISOString().split("T")[0]}
+                                        max={MAX_PRIMER_PAGO.toISOString().split("T")[0]}
+                                        textHelp="Fecha en la que puedes realizar tu primer pago."
+                                        errors={errors}
+                                        touched={touched}
+                                        required
+                                    />
+                                </InputsContainer>
+                                <BtnsContainer>
+                                    <button type="submit" className="btn btn-primary">
+                                        Simular credito de consumo →
+                                    </button>
+                                </BtnsContainer>
+                                {/* <pre>
+                                    {JSON.stringify(values, null, 2)}
+                                </pre> */}
+                            </Form>
+                        </FormContainer>
                     )
                 }
             }

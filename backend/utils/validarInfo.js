@@ -1,11 +1,14 @@
 import { db } from "./db.js";
 
-export const checkRut = async (rut) => {
+export const validarRut = async (rut) => {
     // SIMULACION DE VALIDACION DE RUT XD
     return true;
 }
 
-export const checkCliente = async (rut, email) => {
+export const validarCliente = async (
+    rut,
+    email
+) => {
     return false;
     // retorna directamente false ya que la bdd no esta implementada de momento.
     

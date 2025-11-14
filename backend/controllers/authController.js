@@ -5,7 +5,7 @@ import { db } from "../utils/db.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { checkCliente, checkRut } from "../utils/checkInfo.js";
+import { validarCliente, validarRut } from "../utils/validarInfo.js";
 
 const SECRET = process.env.SECRET_KEY || 'clavesupersecretalolxd';
 
@@ -26,12 +26,12 @@ export const register = async (req,res) => {
             });
         }
 
-        if (!(await checkRut(rut))) {
+        if (!(await validarRut(rut))) {
             return res.status(400).json({
                 error: "Rut no existe."
             });
         }
-        if (await checkCliente(rut,email)) {
+        if (await validarCliente(rut,email)) {
             return res.status(400).json({
                 error: "Rut o correo ya pertenece a un cliente."
             });
@@ -81,7 +81,7 @@ export const login = async (req,res) => {
             });
         }
     
-        if (!(await checkCliente(rut,null))) {
+        if (!(await validarCliente(rut,null))) {
             return res.status(400).json({
                 error: "Rut no pertenece a un cliente."
             });

@@ -1,5 +1,11 @@
 import { ErrorMessage } from "formik";
+import TextHelp from "components/subComponents/TextHelp";
 
+/**
+ * input para un formulario.
+ * 
+ * - retorna el input.
+*/
 const Input = ({
     id,
     name,
@@ -21,9 +27,9 @@ const Input = ({
     const hasError = touched[name] && errors[name];
 
     return (
-        <div className="mb-3">
+        <div className="mt-2 position-relative mt-3">
             {label && (
-                <label htmlFor={id || name} className="form-label">
+                <label htmlFor={id || name} className="form-label bg-light" style={{position:"absolute", display:"flex", justifyContent:"center", alignItems:"center", padding: "0 0.25rem", top:"-0.8rem", left: "0.75rem", gap:"0.25rem"}}>
                     {label}
                     {required && <span className="text-danger"> *</span>}
                 </label>
@@ -49,7 +55,14 @@ const Input = ({
                         {(msg) => <div className="invalid-feedback d-block">{msg}</div>}
                     </ErrorMessage>
                 ) : (
-                    textHelp && <div id={`${id || name}Help`} className="form-text">{textHelp}</div>
+                    textHelp
+                    &&
+                    <TextHelp
+                        id={id ?? ""}
+                        name={name ?? ""}
+                    >
+                        {textHelp}
+                    </TextHelp>
                 )
             }
 

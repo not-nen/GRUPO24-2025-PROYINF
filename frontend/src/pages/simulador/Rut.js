@@ -1,16 +1,19 @@
 import { Formik, Form } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
+// import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useOutletContext } from "react-router-dom";
+// import Typewriter from "typewriter-effect";
 
-import { rutSchema } from "./schemas/simuladorSchema";
+import Input from "components/inputs/Input";
+import FormContainer from "components/containers/FormContainer";
+import InputsContainer from "components/containers/InputsContainer";
+import BtnsContainer from "components/containers/BtnsContainer";
+import FillContainer from "components/containers/FillContainer";
 
-import Input from "../../components/form/components/Input";
-import Typewriter from "typewriter-effect";
+import { formatearRut } from "utils/formatoRut";
 
-import { formatearRut } from "../../components/form/utils/formatoRut";
-
+// TODO: continuar como invitado no funciona de momento por el hook useStepValidation.js :v ahi lo arreglo
 const Rut = () => {
-    const { formData, setField, navigate, nextStep, setFields } = useOutletContext();
+    const { formData, navigate, nextStep, setFields, handleValidation, schema } = useOutletContext();
 
     const initialValues = { rut: formData.rut || "" };
 
@@ -18,53 +21,47 @@ const Rut = () => {
         setFields(values)
         nextStep();
     };
-    const handleSubmitNoRut = () => {
-        setField("rut", "0");
-        nextStep();
-    };
-
-    const handleVolver = () => {
-        navigate("/");
-    }
 
     return (
-        <div>
-            <h1>
-                Simular tu credito de consumo ahora es
-                <Typewriter
-                    options={{
-                        strings: [" facil", " simple", " comodo", " seguro"],
-                        autoStart: true,
-                        loop: true,
-                        deleteSpeed: 50,
-                        delay: 75,
-                        cursor: "|",
-                    }}
-                />
-            </h1>
-            <Formik
-                initialValues={initialValues}
-                onSubmit={(values) => {
-                    handleSubmit(values);
-                }}
-                validationSchema={toFormikValidationSchema(rutSchema)}
-                validateOnBlur={true}
-            >
-                {
-                    ({ values, handleChange, handleBlur, setFieldValue, errors, touched }) => {
-                        const handleRut = (e) => {
-                            handleChange(e);
-                            setFieldValue("rut", formatearRut(e.target.value));
-                        }
+        <Formik
+            initialValues={initialValues}
+            onSubmit={(values) => {
+                handleSubmit(values);
+            }}
+            validate={(values) => handleValidation(values,schema)}
+            validateOnBlur={true}
+        >
+            {
+                ({ values, handleChange, handleBlur, setFieldValue, errors, touched, submitForm }) => {
+                    const handleRut = (e) => {
+                        handleChange(e);
+                        setFieldValue("rut", formatearRut(e.target.value));
+                    }
 
-                        return (
-                            <div className="form-container">
-                                <Form>
-                                    <label htmlFor="rut">RUT</label>
+                    return (
+                        <FormContainer>
+                            <FillContainer>
+                                <h1 className="display-1 krona-one-regular">
+                                    Simula tu credito de consumo
+                                    {/* <Typewriter
+                                        options={{
+                                            strings: [" facil", " simple", " comodo", " seguro"],
+                                            autoStart: true,
+                                            loop: true,
+                                            deleteSpeed: 50,
+                                            delay: 75,
+                                            cursor: "|",
+                                        }}
+                                    /> */}
+                                </h1>
+                            </FillContainer>
+                            <Form>
+                                <InputsContainer>
                                     <Input
                                         id="rut"
                                         type="text"
                                         name="rut"
+                                        label="Rut"
                                         placeholder="11.111.111-1"
                                         value={values.rut}
                                         textHelp="Ingresar tu Rut es opcional."
@@ -73,28 +70,30 @@ const Rut = () => {
                                         errors={errors}
                                         touched={touched}
                                     />
-                                    <div className="form-btns-container d-flex gap-2">
-                                        <button type="submit" className="btn btn-primary">
-                                            Continuar →
-                                        </button>
-                                
-                                        <button type="button" className="btn btn-outline-primary" onClick={handleSubmitNoRut}>
-                                            Simular como invitado →
-                                        </button>
-                                        <button type="button" className="btn btn-outline-secondary" onClick={handleVolver}>
-                                            ← Volver al inicio
-                                        </button>
-                                    </div>
-                                    {/* <pre>
-                                        {JSON.stringify(values, null, 2)}
-                                    </pre> */}
-                                </Form>
-                            </div>
-                        )
-                    }
+                                </InputsContainer>
+                                <BtnsContainer>
+                                    <button type="submit" onClick={submitForm} className="btn btn-primary btn-top">
+                                        Continuar →
+                                    </button>
+                            
+                                    <button type="button" className="btn btn-outline-primary btn-bottom" onClick={() => {handleSubmit()}}>
+                                        Simular como invitado →
+                                    </button>
+                                </BtnsContainer>
+                                <BtnsContainer>
+                                    <button type="button" className="btn btn-outline-dark" onClick={() => {navigate("/")}}>
+                                        ← Volver al inicio
+                                    </button>
+                                </BtnsContainer>
+                                {/* <pre>
+                                    {JSON.stringify(values, null, 2)}
+                                </pre> */}
+                            </Form>
+                        </FormContainer>
+                    )
                 }
-            </Formik>
-        </div>
+            }
+        </Formik>
     );
 };
 

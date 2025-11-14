@@ -1,8 +1,11 @@
-import { Route, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Route, Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-import { defaultData, filterData } from "./store/simuladorStore";
-import { rutSchema, creditoSchema } from "./schemas/simuladorSchema";
+import { defaultData } from "pages/simulador/store/simuladorStore";
+import { simuladorSchema as schema } from "pages/simulador/schemas/simuladorSchema";
+
+import { handleValidation } from "utils/handlers";
+import useStepValidation from "hooks/useStepValidation";
 
 import Rut from './Rut';
 import Credito from './Credito';
@@ -13,41 +16,35 @@ const STEPS = ["", "credito-consumo","simulacion"];
 
 const MainSimulador = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-
     const [formData, setFormData] = useState({...defaultData});
 
-    const currentPath = window.location.pathname.replace(MAIN_PATH, "").replace(/^\//, "");
-    const currentIndex = STEPS.indexOf(currentPath);
+    const currPath = window.location.pathname.replace(MAIN_PATH, "").replace(/^\//, "");
+    const currIndex = STEPS.indexOf(currPath);
 
-    const nextStep = () => currentIndex < STEPS.length -1 && navigate(`${MAIN_PATH}/${STEPS[currentIndex + 1]}`);
-    const prevStep = () => currentIndex > 0 && navigate(`${MAIN_PATH}/${STEPS[currentIndex - 1]}`);
+    const nextStep = () => currIndex < STEPS.length -1 && navigate(`${MAIN_PATH}/${STEPS[currIndex + 1]}`);
+    const prevStep = () => currIndex > 0 && navigate(`${MAIN_PATH}/${STEPS[currIndex - 1]}`);
 
     const setField = (key, value) => setFormData(prev => ({...prev, [key]:value}));
     const setFields = (values) => setFormData(prev => ({ ...prev, ...values }));
 
-    useEffect(() => {
-        const stepValidation = async () => {
-            const { rut, ...resto } = filterData(formData);
+    const { rut, ...resto } = formData;
 
-            if (currentIndex === 0) return;
+    const formDataSteps = [
+        { rut },
+        resto,
+        {},
+    ];
 
-            if (!(rut === "0" || rutSchema.safeParse({rut}).success)) {
-                navigate(MAIN_PATH);
-                return;
-            }
-
-            if (currentIndex === 2 && !(creditoSchema.safeParse(resto).success)) {
-                navigate(MAIN_PATH + "/" + STEPS[1]);
-                return;
-            }
-        }
-        stepValidation();
-    }, [location.pathname, formData, navigate, currentIndex]);
+    useStepValidation({
+        steps: STEPS,
+        formDataSteps: formDataSteps,
+        schema: schema,
+        mainPath: MAIN_PATH
+    })
 
     return (
         <>
-            <Outlet context={{ formData, setField, navigate, nextStep, prevStep, setFields, filterData }} />
+            <Outlet context={{ formData, setField, navigate, nextStep, prevStep, setFields, schema, handleValidation }} />
             {/* <pre>
                 {JSON.stringify(formData, null, 2)}
             </pre> */}

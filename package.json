@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-image-crop": "^11.0.10",
-    "tesseract.js": "^6.0.1"
-  }
-}

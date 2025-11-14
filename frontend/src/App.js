@@ -3,13 +3,13 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Main from './pages/page';
-import Index from './pages/Index';
-import About from './pages/About';
-import SimuladorRoutes from './pages/simulador/page';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
+import Main from 'pages/page';
+import Index from 'pages/Index';
+import About from 'pages/About';
+import SimuladorRoutes from 'pages/simulador/page';
+import Register from 'pages/Register';
+import Login from 'pages/Login';
+import NotFound from 'pages/NotFound';
 
 function App() {
     return (

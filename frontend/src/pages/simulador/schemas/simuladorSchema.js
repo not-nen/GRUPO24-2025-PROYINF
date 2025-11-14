@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { formatearDineroStrBonito } from "../../../components/form/utils/formatoDinero";
+import { formatearDineroStrBonito } from "utils/formatoDinero";
 
 export const MIN_MONTO = 500_000;
 export const MAX_MONTO = 100_000_000;
@@ -36,13 +36,9 @@ const plazoValidation = z.coerce.number({
     .min(MIN_PLAZO, `Ingresa un plazo mayor a ${MIN_PLAZO} meses.`)
     .max(MAX_PLAZO, `Ingresa un plazo menor a ${MAX_PLAZO} meses.`);
 
-export const rutSchema = z.object({
+export const simuladorSchema = z.object({
     rut: z.string()
-        .nonempty("Debes ingresar tu Rut.")
         .regex(/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]{1}$/, "Formato de Rut invalido."),
-});
-
-export const creditoSchema = z.object({
     monto: montoValidation,
     renta: rentaValidation,
     plazo: plazoValidation,

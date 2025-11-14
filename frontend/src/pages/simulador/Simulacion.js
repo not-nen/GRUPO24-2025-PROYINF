@@ -1,12 +1,18 @@
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
-import { backendUrl } from "../../utils/backend";
+import { backendUrl } from "utils/backend";
 
-import { formatearDineroNumber } from "../../components/form/utils/formatoDinero";
-import { useEffect, useState } from "react";
+import FormContainer from "components/containers/FormContainer";
+import BtnsContainer from "components/containers/BtnsContainer";
+import FillContainer from "components/containers/FillContainer";
+import PrevStepBtn from "components/subComponents/PrevStepBtn";
+
+import { formatearDineroNumber } from "utils/formatoDinero";
+import { handleData } from "utils/handlers";
 
 const Simulacion = () => {
-    const { formData, prevStep, filterData, navigate } = useOutletContext();
+    const { formData, prevStep, navigate } = useOutletContext();
 
     const [dataFetch, setDataFetch] = useState({});
 
@@ -29,14 +35,10 @@ const Simulacion = () => {
         return dataRes;
     }
 
-    const handleVolver = () => {
-        navigate("/");
-    }
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = filterData(formData);
+                const data = handleData(formData);
                 if (data.rut === "0") data.rut = "";
                 const res = await getSimulacion(data);
                 setDataFetch(res);
@@ -45,10 +47,13 @@ const Simulacion = () => {
             }
         }
         fetchData();
-    }, [filterData, formData, navigate]);
+    }, [formData, navigate]);
 
     return (
-        <div>
+        <FormContainer>
+            <PrevStepBtn onClick={prevStep}/>
+            <FillContainer/>
+
             {dataFetch ? (
                 <pre>
                     {JSON.stringify(dataFetch, null, 2)}
@@ -57,24 +62,21 @@ const Simulacion = () => {
                 <p>Cargando simulacion...</p>
             )}
 
-            <div>
+            <BtnsContainer>
                 <button className="btn btn-primary">
                     Solicitar credito de consumo →
                 </button>
-                <button className="btn btn-outline-secondary" onClick={prevStep}>
-                    ← Volver
-                </button>
-            </div>
+            </BtnsContainer>
             
-            <div>
+            <BtnsContainer>
                 <button className="btn btn-outline-primary">
                     Guardar simulación
                 </button>
-                <button className="btn btn-outline-secondary" onClick={handleVolver}>
+                <button className="btn btn-outline-dark" onClick={() => {navigate("/")}}>
                     ← Volver al inicio
                 </button>
-            </div>
-        </div>
+            </BtnsContainer>
+        </FormContainer>
     );
 }
 

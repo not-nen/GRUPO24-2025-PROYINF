@@ -1,4 +1,4 @@
-import { formatearDineroStr, formatearDineroStrBonito } from "../../../components/form/utils/formatoDinero";
+import { formatearDineroStr, formatearDineroStrBonito } from "utils/formatoDinero";
 
 // PLAZO
 const optionPlazo = [

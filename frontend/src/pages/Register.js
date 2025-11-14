@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { formatearRut } from '../components/form/utils/formatoRut';
+import { formatearRut } from 'utils/formatoRut';
 
-import Input from '../components/form/components/Input';
+import Input from 'components/inputs/Input';
 
 let Register = () => {
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';

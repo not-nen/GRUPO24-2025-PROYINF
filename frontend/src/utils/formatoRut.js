@@ -1,3 +1,11 @@
+/**
+ * formatea un rut, para que tenga el formato correcto.
+ * 
+ * ejemplo: "11111111" -> "1.111.111-1"
+ * 
+ * - rut - el rut a formatear.
+ * - retorna el rut formateado.
+ */
 export const formatearRut = (rut) => {
     if (rut.length < 2) return rut;
     if (rut.length > 12) return rut.slice(0, 12);

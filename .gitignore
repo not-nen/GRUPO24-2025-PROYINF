@@ -1,10 +1,11 @@
 .vscode
-backend/node_modules
 frontend/node_modules
+frontend/package-lock.json
+backend/node_modules
+backend/package-lock.json
+backend/yarn.lock
 .env
 pgdata/
 backups/
 *.dump
 *.backup
-frontend/package-lock.json
-backend/package-lock.json
