@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 import { backendUrl } from "utils/backend";
 
@@ -12,7 +12,9 @@ import { formatearDineroNumber } from "utils/formatoDinero";
 import { handleData } from "utils/handlers";
 
 const Simulacion = () => {
-    const { formData, prevStep, navigate } = useOutletContext();
+    const navigate = useNavigate();
+
+    const { formData, prevStep } = useOutletContext();
 
     const [dataFetch, setDataFetch] = useState({});
 

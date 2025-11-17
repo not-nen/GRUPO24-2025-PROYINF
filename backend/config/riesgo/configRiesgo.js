@@ -5,7 +5,7 @@ export const CONFIG_RIESGO = {
     tablaEstimado: TABLA_RIESGO_ESTIMADO,       // si usarTabla es true, se usa esta.
     
     // para el uso del ajuste logistico
-    ajusteLogisticoEstimado: {
+    ajusteLogistico: {
         usarMaximoTabla: true,          // usar el ajuste maximo presente en la tabla. si es falso, se usa el maximo definido aqui.
         maximo: 0.180,
         pendiente: 30,

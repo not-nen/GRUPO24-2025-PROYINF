@@ -1,5 +1,5 @@
 import { validarRut } from "../utils/validarInfo.js";
-import { calcularRiesgoEstimado, calcularCAE, calcularTasaMensualFinal, calcularMensualAAnual } from "../utils/calcularInfo.js";
+import { calcularRiesgoEstimado, calcularCAE, calcularTasaMensualFinal, calcularMensualAAnualNominal } from "../utils/calcularInfo.js";
 import { obtenerTasaBase } from "../utils/obtenerInfo.js";
 
 /**
@@ -31,7 +31,6 @@ export const simulacionController = async (req,res) => {
         });
 
         const tasaBaseMensual = obtenerTasaBase("consumo", monto, plazo);
-
         if (tasaBaseMensual == null) return res.status(500).json({
             error: "No se encontro una tasa base."
         });
@@ -44,7 +43,7 @@ export const simulacionController = async (req,res) => {
             error: "No se pudo calcular la tasa mensual final."
         });
 
-        const tasaAnual = calcularMensualAAnual(tasaMensual);
+        const tasaAnual = calcularMensualAAnualNominal(tasaMensual);
 
         const cuota = monto * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -plazo)));
         const CAE = calcularCAE(monto, plazo, cuota);

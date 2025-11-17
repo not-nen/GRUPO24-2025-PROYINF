@@ -1,6 +1,6 @@
 import { Formik, Form } from "formik";
 // import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 // import Typewriter from "typewriter-effect";
 
 import Input from "components/inputs/Input";
@@ -13,18 +13,12 @@ import { formatearRut } from "utils/formatoRut";
 
 // TODO: continuar como invitado no funciona de momento por el hook useStepValidation.js :v ahi lo arreglo
 const Rut = () => {
-    const { formData, navigate, nextStep, setFields, handleValidation, schema } = useOutletContext();
-
-    const initialValues = { rut: formData.rut || "" };
-
-    const handleSubmit = (values) => {
-        setFields(values)
-        nextStep();
-    };
+    const navigate = useNavigate();
+    const { formDataSteps, currIndex, handleSubmit, handleValidation, schema } = useOutletContext();
 
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={formDataSteps[currIndex]}
             onSubmit={(values) => {
                 handleSubmit(values);
             }}

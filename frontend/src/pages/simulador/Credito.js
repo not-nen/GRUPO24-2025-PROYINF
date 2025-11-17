@@ -16,25 +16,11 @@ import CreditInput from "components/inputs/CreditInput";
 import { MAX_PRIMER_PAGO, MIN_PRIMER_PAGO, MIN_MONTO, MAX_MONTO, MAX_PLAZO } from "pages/simulador/schemas/simuladorSchema";
 
 const Credito = () => {
-    const { formData, nextStep, prevStep, setFields, handleValidation, schema } = useOutletContext();
-
-    const initialValues = {
-        monto: formData.monto || "",
-        renta: formData.renta || "",
-        renta_otro: formData.renta_otro || "",
-        plazo: formData.plazo || "",
-        plazo_otro: formData.plazo_otro || "",
-        primerPago: formData.primerPago || "",
-    };
-    
-    const handleSubmit = (values) => {
-        setFields(values);
-        nextStep();
-    }
+    const { formDataSteps, currIndex, prevStep, handleSubmit, handleValidation, schema } = useOutletContext();
 
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={formDataSteps[currIndex]}
             onSubmit={handleSubmit}
             validate={(values) => handleValidation(values,schema)}
             validationOnBlur={true}

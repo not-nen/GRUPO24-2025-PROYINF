@@ -4,15 +4,15 @@
 // ESO LA tablaRiesgo.js
 
 const TABLA_RIESGO_ESTIMADO = [
-    { maxRango: 0.07, ajuste: 0.000 },      // muy bajo, perfecto!
-    { maxRango: 0.10, ajuste: 0.008 },      // bajo
-    { maxRango: 0.13, ajuste: 0.015 },      // medio bajo
-    { maxRango: 0.17, ajuste: 0.025 },      // medio
-    { maxRango: 0.22, ajuste: 0.040 },      // medio alto
-    { maxRango: 0.28, ajuste: 0.060 },      // alto
-    { maxRango: 0.35, ajuste: 0.085 },      // muy alto
-    { maxRango: 0.45, ajuste: 0.120 },      // critico
-    { maxRango: Infinity, ajuste: 0.180 },  // demasiado riesgo
+    { maxRango: 0.07, ajuste: 0.0000 },         // muy bajo, perfecto!
+    { maxRango: 0.10, ajuste: 0.0015 },         // bajo
+    { maxRango: 0.15, ajuste: 0.0030 },         // medio bajo
+    { maxRango: 0.20, ajuste: 0.0060 },         // medio
+    { maxRango: 0.25, ajuste: 0.0100 },         // medio alto
+    { maxRango: 0.30, ajuste: 0.0150 },         // alto
+    { maxRango: 0.40, ajuste: 0.0200 },         // muy alto
+    { maxRango: 0.50, ajuste: 0.0300 },         // critico
+    { maxRango: Infinity, ajuste: 0.0400 },     // demasiado riesgo
 ];
 
 // para ordenarla si es que esta desordenada.
