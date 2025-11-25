@@ -1,63 +1,61 @@
 @use 'colors' as *;
 
 $btn-transition:
-  color 0.05s ease-in-out,
-  background-color 0.05s ease-in-out,
-  border-color 0.05s ease-in-out,
-  box-shadow 0.05s ease-in-out;
+    color 0.05s ease-in-out,
+    background-color 0.05s ease-in-out,
+    border-color 0.05s ease-in-out,
+    box-shadow 0.05s ease-in-out;
 
 $btn-border-radius: 1.5rem;
 $btn-border-radius-alt: .5rem;
 $focus-ring-opacity: .2;
 
 @use "bootstrap" with (
-  $primary: $primary,
-  $secondary: $secondary,
-  $success: $success,
-  $danger: $danger,
-  $warning: $warning,
-  $info: $info,
-  $light: $light,
-  $dark: $dark,
+    $primary: $primary,
+    $secondary: $secondary,
+    $success: $success,
+    $danger: $danger,
+    $warning: $warning,
+    $info: $info,
+    $light: $light,
+    $dark: $dark,
 
-  $body-bg: $body-bg,
-  $body-color: $secondary,
+    $body-bg: $body-bg,
+    $body-color: $secondary,
 
-  $theme-colors: $theme-colors,
+    $theme-colors: $theme-colors,
 
-  $focus-ring-width: 2px,
-  $focus-ring-opacity: $focus-ring-opacity,
+    $focus-ring-width: 2px,
+    $focus-ring-opacity: $focus-ring-opacity,
 
-  $navbar-brand-font-size: 1rem,
-  $navbar-toggler-padding-x: .25rem,
-  $navbar-toggler-padding-y: .25rem,
-  $navbar-toggler-font-size: 1rem,
-  $navbar-toggler-border-radius: 0,
+    $navbar-brand-font-size: 1rem,
+    $navbar-toggler-padding-x: .25rem,
+    $navbar-toggler-padding-y: .25rem,
+    $navbar-toggler-font-size: 1rem,
+    $navbar-toggler-border-radius: 0,
 
-  $navbar-light-brand-color: $body-color,
-  $navbar-light-toggler-border-color: transparent,
+    $navbar-light-brand-color: $body-color,
+    $navbar-light-toggler-border-color: transparent,
 
-  $container-padding-x: 2rem,
+    $container-padding-x: 2rem,
 
-  $border-color: $secondary,
+    $border-color: $secondary,
 
-  $btn-border-radius: $btn-border-radius,
-  $btn-font-size: 1rem,
-  $btn-padding-x: 1.5rem,
-  $btn-padding-y: 0.7rem,
-  $btn-transition: $btn-transition,
+    $btn-border-radius: $btn-border-radius,
+    $btn-font-size: 1rem,
+    $btn-padding-x: 1.5rem,
+    $btn-padding-y: 0.7rem,
+    $btn-transition: $btn-transition,
 
-  $input-bg: transparent,
-  $input-padding-x: 1rem,
-  $input-padding-y: 0.7rem,
-  $form-label-margin-bottom: 0,
-
-
+    $input-bg: transparent,
+    $input-padding-x: 1rem,
+    $input-padding-y: 0.7rem,
+    $form-label-margin-bottom: 0,
 );
 
 @for $i from 1 through 10 {
-  .w-#{$i}rem { width: #{$i}rem !important; }
-  .h-#{$i}rem { height: #{$i}rem !important; }
+    .w-#{$i}rem { width: #{$i}rem !important; }
+    .h-#{$i}rem { height: #{$i}rem !important; }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Krona+One&display=swap');
@@ -73,11 +71,11 @@ $focus-ring-opacity: .2;
 // }
 
 .krona-one-regular {
-  font-family: "Krona One", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  line-height: 90%;
-  letter-spacing: -0.1rem;
+    font-family: "Krona One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 90%;
+    letter-spacing: -0.1rem;
 }
 
 .navbar-toggler:focus {
@@ -102,6 +100,27 @@ code {
 .fit-flex {
     flex: 1 1 auto;
     min-height: fit-content;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+}
+
+// .navbar-collapse {
+//     position: absolute;
+//     top: 100%;
+//     left: 0;
+//     width: 100%;
+//     background-color: $light;
+// }
+
+.credit-input::placeholder {
+    color: rgba($light, 0.5);
+}
+
+.form-control {
+    border-radius: 0.5rem;
 }
 
 .Typewriter {

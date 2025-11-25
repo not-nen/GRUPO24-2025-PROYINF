@@ -67,16 +67,16 @@ const Rut = () => {
                                 </InputsContainer>
                                 <BtnsContainer>
                                     <button type="submit" onClick={submitForm} className="btn btn-primary btn-top">
-                                        Continuar →
+                                        Continuar
                                     </button>
                             
-                                    <button type="button" className="btn btn-outline-primary btn-bottom" onClick={() => {handleSubmit()}}>
-                                        Simular como invitado →
+                                    <button type="button" className="btn btn-outline-primary btn-bottom">
+                                        Simular como invitado
                                     </button>
                                 </BtnsContainer>
                                 <BtnsContainer>
                                     <button type="button" className="btn btn-outline-dark" onClick={() => {navigate("/")}}>
-                                        ← Volver al inicio
+                                        Volver al inicio
                                     </button>
                                 </BtnsContainer>
                                 {/* <pre>

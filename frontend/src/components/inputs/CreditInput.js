@@ -19,7 +19,7 @@ const CreditInput = ({
 }) => {
     const hasError = touched[name] && errors[name];
 
-    const defaultSize = 3; //rem
+    const defaultSize = 3.5; //rem
     const containerPadding = 1.5; //rem
     const sizeStep = 0.025; //rem
     const rem = 16; //px
@@ -88,7 +88,7 @@ const CreditInput = ({
                 className={`d-flex flex-column bg-primary rounded-4 justify-content-end align-items-start text-light mx-auto w-100 ${hasError ? "border border-danger border-4" : ""}`}
                 style={{
                     padding: containerPadding + "rem",
-                    maxWidth: "500px",
+                    // maxWidth: "500px",
                     minHeight: "fit-content",
                     aspectRatio: "7 / 4",
                 }}
@@ -109,7 +109,7 @@ const CreditInput = ({
                     name={name}
                     type="text"
                     placeholder={placeholder}
-                    className={`krona-one-regular text-light m-0 border-0 bg-transparent shadow-none p-0`}
+                    className={`credit-input krona-one-regular text-light m-0 border-0 bg-transparent shadow-none p-0`}
                     style={{
                         display: "block",
                         width: "100%",

@@ -221,7 +221,7 @@ const About = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>🔍 OCR por tipo de carnet</h2>
+      <h2>OCR por tipo de carnet</h2>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
       <br />
       <br />
@@ -274,9 +274,9 @@ const About = () => {
       {/* 🖼️ Recorte MANUAL con canvas (solo si se selecciona recortar) */}
       {imageUrl && usarRecorte && !croppedImage && (
         <div style={{ marginTop: 20 }}>
-          <h4>🎯 Selecciona el área a recortar (arrastra el mouse)</h4>
+          <h4>Selecciona el área a recortar (arrastra el mouse)</h4>
           <p style={{ fontSize: "12px", color: "#666" }}>
-            💡 La imagen se redimensionará automáticamente a 1000x600px después del recorte
+            La imagen se redimensionará automáticamente a 1000x600px después del recorte
           </p>
           <div style={{ position: "relative", display: "inline-block" }}>
             <canvas
@@ -309,7 +309,7 @@ const About = () => {
           </div>
           <br />
           <button onClick={confirmarRecorte} style={{ marginTop: 10 }}>
-            ✂️ Confirmar recorte seleccionado
+            Confirmar recorte seleccionado
           </button>
         </div>
       )}
@@ -317,7 +317,7 @@ const About = () => {
       {/* Vista previa de imagen (recortada o completa) */}
       {(imageUrl && !usarRecorte) || croppedImage ? (
         <div style={{ marginTop: 20 }}>
-          <h4>📸 {usarRecorte ? "Imagen recortada lista" : "Imagen completa lista"}</h4>
+          <h4>{usarRecorte ? "Imagen recortada lista" : "Imagen completa lista"}</h4>
           <img 
             src={usarRecorte ? croppedImage : imageUrl} 
             alt={usarRecorte ? "Recortada" : "Completa"} 
@@ -361,7 +361,7 @@ const About = () => {
           disabled={procesando || (usarRecorte && !croppedImage)}
           style={{ marginTop: 10 }}
         >
-          {procesando ? "Procesando..." : "🧠 Leer zonas OCR"}
+          {procesando ? "Procesando..." : "Leer zonas OCR"}
         </button>
       )}
 

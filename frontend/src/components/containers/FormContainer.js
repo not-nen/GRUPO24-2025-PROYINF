@@ -5,7 +5,9 @@
 */
 const FormContainer = ({children}) => {
     return (
-        <div className="d-flex flex-column gap-3 h-100 fit-flex">
+        <div className="d-flex flex-column gap-3 h-100 w-100 fit-flex mx-auto" style={{
+            maxWidth: "1000px"
+        }}>
             {children}
         </div>
     )

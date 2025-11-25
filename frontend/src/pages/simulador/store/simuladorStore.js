@@ -4,6 +4,7 @@ const hoy = new Date();
 const primerPagoDefault = new Date(hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate());
 
 export const defaultData = {
+    tipo: "",
     rut: "",
     monto: "",
     renta: "",
