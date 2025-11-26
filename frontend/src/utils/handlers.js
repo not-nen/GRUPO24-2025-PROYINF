@@ -1,5 +1,4 @@
 import { formatearDineroNumber } from "utils/formatoDinero";
-import { z } from 'zod';
 
 /**
  * valida los `values` con el `schema` de zod, para retornar errores.
@@ -30,28 +29,17 @@ export const handleValidation = (values, schema) => {
 /**
  * retorna un schema, que solo validara los datos presentes en `values`, a partir de un `schema`.
  * 
- * si un `key` no esta definido en el schema, se dejara como opcional.
- * 
  * - `values` - los valores que necesitas del schema, se pasan directo los values del formulario.
  * - `schema` - el schema a transformar
  * - retorna el schema modificado.
  */
-export const handleSchema = (values, schema) => {
+export const handleSchema = (values,schema) => {
     const keys = Object.keys(values);
-    const shape = schema.shape;
-
-    const newShape = {};
-
-    for (const k of keys) {
-        if (k in shape) {
-            newShape[k] = shape[k];
-        } else {
-            newShape[k] = z.any().optional();
-        }
-    }
-
-    return z.object(newShape);
-};
+    const res = schema.pick(
+        Object.fromEntries(keys.map((k) => [k,true]))
+    );
+    return res;
+}
 
 
 /**

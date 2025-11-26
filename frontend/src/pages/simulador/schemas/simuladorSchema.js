@@ -37,8 +37,16 @@ const plazoValidation = z.coerce.number({
     .max(MAX_PLAZO, `Ingresa un plazo menor a ${MAX_PLAZO} meses.`);
 
 export const simuladorSchema = z.object({
-    rut: z.string()
-        .regex(/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]{1}$/, "Formato de Rut invalido."),
+    rut: z.string().refine((val) => {
+
+        if (!val || val === "" || val === "0") return true;
+        
+        return /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]{1}$/.test(val);
+    }, {
+        message: "Formato de Rut invalido."
+    }),
+    
+    
     monto: montoValidation,
     renta: rentaValidation,
     plazo: plazoValidation,

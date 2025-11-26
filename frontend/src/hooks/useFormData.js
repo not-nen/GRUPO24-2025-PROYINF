@@ -5,7 +5,7 @@ import { useState } from "react";
  * 
  * - `defaultData` - la data que debe tener el form por defecto.
  */
-const useFormData = (defaultData = {}) => {
+export const useFormData = (defaultData = {}) => {
     const [formData, setFormData] = useState({ ...defaultData });
 
     const setField = (key, value) => {
@@ -41,5 +41,3 @@ const useFormData = (defaultData = {}) => {
         resetForm,
     };
 };
-
-export default useFormData;

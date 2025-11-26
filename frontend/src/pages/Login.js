@@ -1,12 +1,16 @@
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom'; 
+import { useAuth } from 'context/authContext';  
 import { formatearRut } from 'utils/formatoRut';
 import Input from 'components/inputs/Input';
 
-let Login = () => {
+const Login = () => {
     const [rut, setRut] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    const { login } = useAuth(); 
+    const navigate = useNavigate(); 
 
     const handleRut = (e) => {
         setError('');
@@ -14,6 +18,7 @@ let Login = () => {
         const rutFormateado = formatearRut(rut);
         setRut(rutFormateado);
     }
+
     const handlePassword = (e) => {
         setError('');
         setPassword(e.target.value);
@@ -23,7 +28,9 @@ let Login = () => {
         e.preventDefault();
 
         try {
-            const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+            
+            const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+            
             const res = await fetch(`${backendUrl}/api/auth/login`, {
                 method: 'POST',
                 headers: {
@@ -34,13 +41,18 @@ let Login = () => {
                     "password" : password
                 })
             });
+            
             const data = await res.json();
+            
             if (!res.ok) {
-                throw new Error(data.error || 'Error al iniciar sesion.');
+                throw new Error(data.error || 'Error al iniciar sesión.');
             }
 
-            localStorage.setItem('token', data.token);
-            window.location.href = '/';
+            
+            login(data.token);
+            
+            
+            navigate('/');
 
         } catch (err) {
             setError(err.message);
@@ -53,7 +65,7 @@ let Login = () => {
                 <Input
                     id="rut"
                     value={rut}
-                    setValue={handleRut}
+                    onChange={handleRut} 
                     label="Rut"
                     required
                     maxLength={12}
@@ -63,14 +75,14 @@ let Login = () => {
                     id="password"
                     type="password"
                     value={password}
-                    setValue={handlePassword}
+                    onChange={handlePassword} 
                     label="Contraseña"
                     required
                     maxLength={32}
                 />
                 {error && <p className="form-text">{error}</p>}
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Ingresar</button>
             </form>
         </div>
     );

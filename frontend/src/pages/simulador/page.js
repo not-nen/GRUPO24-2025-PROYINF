@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Route, Outlet } from "react-router-dom";
 
 import { defaultData } from "pages/simulador/store/simuladorStore";
@@ -6,7 +5,7 @@ import { simuladorSchema as schema } from "pages/simulador/schemas/simuladorSche
 
 import { handleValidation } from "utils/handlers";
 import useStepValidation from "hooks/useStepValidation";
-import useFormData from "hooks/useFormData";
+import { useFormData } from "hooks/useFormData";
 
 import Rut from './Rut';
 import Credito from './Credito';
@@ -18,14 +17,7 @@ const STEPS = ["", "credito-consumo","simulacion"];
 const MainSimulador = () => {
     const { formData, setField, setFields } = useFormData(defaultData);
 
-    // TODO: esto es por ahora, se deberia poder escoger que credito pedir.
-    // no es para ahora, ya que lo que nos pidieron es consumo nada mas,
-    // pero eso xd
-    useEffect(() => {
-        if (!formData.tipo) setField("tipo", "consumo");
-    }, [formData.tipo, setField]);
-
-    const { _, rut, ...resto } = formData;
+    const { rut, ...resto } = formData;
     const formDataSteps = [
         { rut },
         resto,
@@ -57,7 +49,7 @@ const MainSimulador = () => {
 const SimuladorRoutes = () => (
     <>
         <Route path={MAIN_PATH} element={<MainSimulador />}>
-            <Route path={STEPS[0]} element={<Rut />} />
+            <Route index element={<Rut />} />
             <Route path={STEPS[1]} element={<Credito />} />
             <Route path={STEPS[2]} element={<Simulacion />} />
         </Route>

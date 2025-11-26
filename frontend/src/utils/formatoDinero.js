@@ -22,10 +22,10 @@ export const formatearDineroStr = (value) => (value) && value.toString().replace
 /**
  * formatea un numero (`value`) a un formato string bonito (xD).
  * 
- * ejemplo: "1000000" -> "$ 1.000.000".
+ * ejemplo: "1000000" -> "CLP 1.000.000".
  * 
  * - `value` - el valor (numero) a formatear.
  * - retorna el valor formateado.
  * 
  */
-export const formatearDineroStrBonito = (value) => (value) && '$ ' + formatearDineroStr(value);
+export const formatearDineroStrBonito = (value) => (value) && 'CLP ' + formatearDineroStr(value);

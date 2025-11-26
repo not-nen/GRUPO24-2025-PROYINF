@@ -1,37 +1,30 @@
 import { db } from "./db.js";
 
+
 export const validarRut = async (rut) => {
-    // SIMULACION DE VALIDACION DE RUT XD
-    return true;
+    return true; 
 }
 
-export const validarCliente = async (
-    rut,
-    email
-) => {
-    return false;
-    // retorna directamente false ya que la bdd no esta implementada de momento.
-    
+export const validarCliente = async (rut, email) => {
     try {
         rut = rut ? rut.trim() : "";
         email = email ? email.trim() : "";
-        if (!rut && !email) {
-            return false;
-        }
+        
+        if (!rut && !email) return false;
 
-        // RUT CHECK
+        
         if (rut) {
             const res = await db.query(
-                "SELECT 1 FROM clientes WHERE rut = $1 LIMIT 1;",
+                "SELECT 1 FROM cliente WHERE rut = $1 LIMIT 1;", 
                 [rut]
             );
             if (res.rowCount > 0) return true;
         }
 
-        // EMAIL CHECK
+        
         if (email) {
             const res = await db.query(
-                "SELECT 1 FROM clientes WHERE email = $1 LIMIT 1;",
+                "SELECT 1 FROM cliente WHERE email = $1 LIMIT 1;", 
                 [email]
             );
             if (res.rowCount > 0) return true;
@@ -41,6 +34,7 @@ export const validarCliente = async (
 
     } catch (err) {
         console.error("Error verificando cliente: ", err);
-        return true;
+        
+        return true; 
     }
 };

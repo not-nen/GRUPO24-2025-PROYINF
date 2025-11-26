@@ -11,7 +11,6 @@ import InputsContainer from "components/containers/InputsContainer";
 import BtnsContainer from "components/containers/BtnsContainer";
 import FillContainer from "components/containers/FillContainer";
 import PrevStepBtn from "components/subComponents/PrevStepBtn";
-import CardsContainer from "components/containers/CardsContainer";
 import CreditInput from "components/inputs/CreditInput";
 
 import { MAX_PRIMER_PAGO, MIN_PRIMER_PAGO, MIN_MONTO, MAX_MONTO, MAX_PLAZO } from "pages/simulador/schemas/simuladorSchema";
@@ -67,7 +66,7 @@ const Credito = () => {
                             <Form>
                                 <PrevStepBtn onClick={prevStep}/>
                                 <FillContainer/>
-                                <CardsContainer>
+                                <InputsContainer>
                                     <CreditInput
                                         id="monto"
                                         name="monto"
@@ -90,7 +89,7 @@ const Credito = () => {
                                         touched={touched}
                                         required
                                     /> */}
-                                </CardsContainer>
+                                </InputsContainer>
                                 <InputsContainer>
                                     <Select
                                         id="renta"
@@ -168,7 +167,7 @@ const Credito = () => {
                                 </InputsContainer>
                                 <BtnsContainer>
                                     <button type="submit" className="btn btn-primary">
-                                        Simular credito de consumo
+                                        Simular credito de consumo →
                                     </button>
                                 </BtnsContainer>
                                 {/* <pre>

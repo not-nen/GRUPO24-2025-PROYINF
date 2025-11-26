@@ -77,7 +77,7 @@ let Register = () => {
                     id="rut"
                     label="Rut"
                     value={rut}
-                    setValue={handleRut}
+                    onChange={handleRut}
                     required
                     maxLength={12}
                     placeholder="11.111.111-1"
@@ -87,7 +87,7 @@ let Register = () => {
                     id="nombre"
                     label="Nombre"
                     value={nombre}
-                    setValue={handleNombre}
+                    onChange={handleNombre}
                     required
                 />
 
@@ -95,7 +95,7 @@ let Register = () => {
                     id="apellido"
                     label="Apellido"
                     value={apellido}
-                    setValue={handleApellido}
+                    onChange={handleApellido}
                     required
                 />
 
@@ -103,7 +103,7 @@ let Register = () => {
                     id="email"
                     label="Correo"
                     value={email}
-                    setValue={handleEmail}
+                    onChange={handleEmail}
                     type="email"
                     required
                 />
@@ -112,7 +112,7 @@ let Register = () => {
                     id="password"
                     label="Contraseña"
                     value={password}
-                    setValue={handlePassword}
+                    onChange={handlePassword}
                     type="password"
                     maxLength={32}
                     required
@@ -122,7 +122,7 @@ let Register = () => {
                     id="confirm_password"
                     label="Confirmar contraseña"
                     value={confirmPassword}
-                    setValue={handleConfirmPassword}
+                    onChange={handleConfirmPassword}
                     type="password"
                     maxLength={32}
                     required

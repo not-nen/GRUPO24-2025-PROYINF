@@ -109,3 +109,13 @@ CREATE TABLE pago (
     medio_pago TEXT
 
 );
+
+CREATE TABLE simulacion (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    cliente_id BIGINT REFERENCES cliente(id) ON DELETE CASCADE,
+    monto NUMERIC(14,2) NOT NULL,
+    plazo INTEGER NOT NULL,
+    cuota_mensual INTEGER NOT NULL,
+    cae NUMERIC(5,2) NOT NULL,
+    fecha_simulacion TIMESTAMPTZ DEFAULT now()
+);
