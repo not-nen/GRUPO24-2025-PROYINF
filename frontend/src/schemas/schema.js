@@ -36,7 +36,7 @@ const plazoValidation = z.coerce.number({
     .min(MIN_PLAZO, `Ingresa un plazo mayor a ${MIN_PLAZO} meses.`)
     .max(MAX_PLAZO, `Ingresa un plazo menor a ${MAX_PLAZO} meses.`);
 
-export const simuladorSchema = z.object({
+export const schema = z.object({
     rut: z.string().refine((val) => {
 
         if (!val || val === "" || val === "0") return true;
@@ -57,3 +57,15 @@ export const simuladorSchema = z.object({
     .min(MIN_PRIMER_PAGO_FIXED, `El primer pago debe ser desde ${MIN_PRIMER_PAGO.toLocaleDateString()}`)
     .max(MAX_PRIMER_PAGO, `El primer pago debe ser antes de ${MAX_PRIMER_PAGO.toLocaleDateString()}`),
 });
+
+const primerPagoDefault = new Date(hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate());
+
+export const defaultData = {
+    rut: "",
+    monto: "",
+    renta: "",
+    renta_otro: "",
+    plazo: "",
+    plazo_otro: "",
+    primerPago: primerPagoDefault.toISOString().split("T")[0],
+};

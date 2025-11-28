@@ -81,7 +81,7 @@ export const guardarSimulacion = async (req, res) => {
         res.json({ message: "Simulación guardada correctamente" });
     } catch (e) {
         console.error("Error guardando:", e);
-        res.status(500).json({ error: "Error al guardar la simulación" });
+        res.status(500).json({ error: "Error al guardar la simulación: " + e.message });
     }
 };
 
