@@ -65,7 +65,7 @@ const Navbar = () => {
                         ) : (
                             <>
                                 <li className="nav-item">
-                                    <Link className="btn btn-outline-primary btn-sm rounded-pill px-3" to="/login">
+                                    <Link className="btn btn-outline-primary btn-sm rounded-pill px-3" to="/iniciar-sesion">
                                         Iniciar Sesión
                                     </Link>
                                 </li>

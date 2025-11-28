@@ -1,139 +1,151 @@
-import { useState } from 'react';
+import { useFormikContext } from "formik";
 
-import { formatearRut } from 'utils/formatoRut';
+import Input from "components/inputs/Input";
+import BtnsContainer from "components/containers/BtnsContainer";
+import FillContainer from "components/containers/FillContainer";
+import InputsContainer from "components/containers/InputsContainer";
 
-import Input from 'components/inputs/Input';
+import { formatearRut } from "utils/formatoRut";
+import { useRegister } from "context/registerContext";
+import { useNavigate } from "react-router-dom";
 
-let Register = () => {
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+import { RegisterProvider } from "context/registerContext";
 
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [email, setEmail] = useState('');
-    const [rut, setRut] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+const Register = () => null;
 
-    const handleNombre = (e) => {
-        setError('');
-        setNombre(e.target.value);
-    }
-    const handleApellido = (e) => {
-        setError('');
-        setApellido(e.target.value);
-    }
-    const handleEmail = (e) => {
-        setError('');
-        setEmail(e.target.value);
-    }
+Register.data = [
+    "rut",
+    "nombre",
+    "apellido",
+    "email",
+    "password",
+    "confirmPassword"
+];
+
+Register.Form = function RegisterForm() {
+    const { values, handleChange, handleBlur, setFieldValue, errors, touched } = useFormikContext();
+    const { error } = useRegister();
+
     const handleRut = (e) => {
-        setError('');
-        const rut = e.target.value;
-        const rutFormateado = formatearRut(rut);
-        setRut(rutFormateado);
-    }
-    const handlePassword = (e) => {
-        setError('');
-        setPassword(e.target.value);
-    }
-    const handleConfirmPassword = (e) => {
-        setError('');
-        setConfirmPassword(e.target.value);
-    }
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        try {
-            const res = await fetch(`${backendUrl}/api/auth/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "nombre" : nombre,
-                    "apellido" : apellido,
-                    "email" : email,
-                    "rut" : rut,
-                    "password" : password,
-                    "confirmPassword" : confirmPassword
-                })
-            });
-            const data = await res.json();
-            if (!res.ok) {
-                throw new Error(data.error || 'Error al registrar cliente.');
-            }
-            window.location.href = '/login';
-        } catch (err) {
-            setError(err.message);
-        }
-    }
+        const formatted = formatearRut(e.target.value);
+        setFieldValue("rut", formatted);
+    };
 
     return (
-        <div className="container">
-            <form onSubmit={handleSubmit}>
+        <>
+            <FillContainer>
+                <h1 className="display-1 krona-one-regular">Crea tu cuenta</h1>
+            </FillContainer>
+            <InputsContainer>
                 <Input
                     id="rut"
-                    label="Rut"
-                    value={rut}
+                    name="rut"
+                    label="RUT"
+                    value={values.rut}
                     onChange={handleRut}
+                    onBlur={handleBlur}
                     required
                     maxLength={12}
                     placeholder="11.111.111-1"
+                    errors={errors}
+                    touched={touched}
                 />
 
                 <Input
                     id="nombre"
+                    name="nombre"
                     label="Nombre"
-                    value={nombre}
-                    onChange={handleNombre}
+                    value={values.nombre}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     required
+                    errors={errors}
+                    touched={touched}
                 />
 
                 <Input
                     id="apellido"
+                    name="apellido"
                     label="Apellido"
-                    value={apellido}
-                    onChange={handleApellido}
+                    value={values.apellido}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     required
+                    errors={errors}
+                    touched={touched}
                 />
 
                 <Input
                     id="email"
+                    name="email"
                     label="Correo"
-                    value={email}
-                    onChange={handleEmail}
                     type="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     required
+                    errors={errors}
+                    touched={touched}
                 />
 
                 <Input
                     id="password"
+                    name="password"
                     label="Contraseña"
-                    value={password}
-                    onChange={handlePassword}
                     type="password"
-                    maxLength={32}
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     required
+                    maxLength={32}
+                    errors={errors}
+                    touched={touched}
                 />
 
                 <Input
-                    id="confirm_password"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     label="Confirmar contraseña"
-                    value={confirmPassword}
-                    onChange={handleConfirmPassword}
                     type="password"
-                    maxLength={32}
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     required
+                    maxLength={32}
+                    errors={errors}
+                    touched={touched}
                 />
 
-                {error && <p className="form-text">{error}</p>}
-
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
+                {error && <p className="form-text text-danger">{error}</p>}
+            </InputsContainer>
+        </>
     );
-}
+};
+
+Register.Buttons = function RegisterButtons() {
+    const { registerUser, loading } = useRegister();
+    const navigate = useNavigate();
+    const { values } = useFormikContext();
+
+    const submit = async () => {
+        const res = await registerUser(values);
+        if (res.ok) navigate("/login");
+    };
+
+    return (
+        <BtnsContainer>
+            <button
+                type="button"
+                className="btn btn-primary"
+                onClick={submit}
+                disabled={loading}
+            >
+                {loading ? "Registrando..." : "Crear cuenta →"}
+            </button>
+        </BtnsContainer>
+    );
+};
+
+Register.Provider = RegisterProvider;
 
 export default Register;

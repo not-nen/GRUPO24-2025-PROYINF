@@ -8,13 +8,16 @@ import SimuladorRoutes from 'pages/simulador/page';
 import Register from 'pages/Register';
 import Login from 'pages/Login';
 import NotFound from 'pages/NotFound';
-import { AuthProvider } from 'context/authContext';
 import Historial from 'pages/Historial';
+
+import { AuthProvider } from 'context/authContext';
+import { WizardRouter } from 'components/renderers/wizardRenderer';
 
 function App() {
     return (
-        <AuthProvider> {}
-            <BrowserRouter>
+        
+        <BrowserRouter>
+            <AuthProvider> {}
                 <Routes>
                     <Route path="/" element={<Main/>}>
                         {}
@@ -22,14 +25,14 @@ function App() {
                         <Route path="/about" element={<About/>} />
                         <Route path="/escanear" element={<ScannerPage/>} />
                         {SimuladorRoutes()}
-                        <Route path="/crear-cuenta" element={<Register/>} />
-                        <Route path="/login" element={<Login/>} />
+                        {WizardRouter("/crear-cuenta", [{ path: "", component: Register }])}
+                        {WizardRouter("/iniciar-sesion", [{ path: "", component: Login }])}
                         <Route path="*" element={<NotFound/>}/>
                         <Route path="/historial" element={<Historial/>} />
                     </Route>
                 </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+            </AuthProvider>
+        </BrowserRouter>
     );
 }
 

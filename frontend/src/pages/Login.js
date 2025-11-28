@@ -1,91 +1,95 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import { useAuth } from 'context/authContext';  
-import { formatearRut } from 'utils/formatoRut';
-import Input from 'components/inputs/Input';
+import { useFormikContext } from "formik";
+import Input from "components/inputs/Input";
+import BtnsContainer from "components/containers/BtnsContainer";
+import FillContainer from "components/containers/FillContainer";
+import InputsContainer from "components/containers/InputsContainer";
 
-const Login = () => {
-    const [rut, setRut] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+import { useLogin } from "context/loginContext";
+import { formatearRut } from "utils/formatoRut";
 
-    const { login } = useAuth(); 
-    const navigate = useNavigate(); 
+import { LoginProvider } from "context/loginContext";
+
+const Login = () => null;
+
+Login.data = ["rut", "password"];
+
+Login.Form = function LoginForm() {
+    const { values, errors, touched, handleBlur, handleChange, setFieldValue } = useFormikContext();
+    const { error } = useLogin();
 
     const handleRut = (e) => {
-        setError('');
-        const rut = e.target.value;
-        const rutFormateado = formatearRut(rut);
-        setRut(rutFormateado);
-    }
-
-    const handlePassword = (e) => {
-        setError('');
-        setPassword(e.target.value);
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            
-            const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
-            
-            const res = await fetch(`${backendUrl}/api/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "rut" : rut,
-                    "password" : password
-                })
-            });
-            
-            const data = await res.json();
-            
-            if (!res.ok) {
-                throw new Error(data.error || 'Error al iniciar sesión.');
-            }
-
-            
-            login(data.token);
-            
-            
-            navigate('/');
-
-        } catch (err) {
-            setError(err.message);
-        }
-    }
+        handleChange(e);
+        setFieldValue("rut", formatearRut(e.target.value));
+    };
 
     return (
-        <div className="container">
-            <form onSubmit={handleSubmit}>
+        <>
+            <FillContainer>
+                <h1 className="display-1 krona-one-regular">Inicia sesión</h1>
+            </FillContainer>
+
+            <InputsContainer>
                 <Input
                     id="rut"
-                    value={rut}
-                    onChange={handleRut} 
+                    name="rut"
                     label="Rut"
-                    required
-                    maxLength={12}
+                    value={values.rut}
+                    onChange={handleRut}
+                    onBlur={handleBlur}
                     placeholder="11.111.111-1"
+                    errors={errors}
+                    touched={touched}
                 />
+
                 <Input
                     id="password"
+                    name="password"
                     type="password"
-                    value={password}
-                    onChange={handlePassword} 
                     label="Contraseña"
-                    required
-                    maxLength={32}
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    errors={errors}
+                    touched={touched}
                 />
-                {error && <p className="form-text">{error}</p>}
 
-                <button type="submit" className="btn btn-primary">Ingresar</button>
-            </form>
-        </div>
+                {error && <p className="text-danger mt-2">{error}</p>}
+            </InputsContainer>
+        </>
     );
-}
+};
+
+Login.Buttons = function LoginButtons() {
+    const { values } = useFormikContext();
+    const { handleLogin, loading } = useLogin();
+
+    const submitLogin = async () => {
+        const res = await handleLogin(values.rut, values.password);
+        if (res.ok) window.location.href = "/";
+    };
+
+    return (
+        <BtnsContainer>
+            <button
+                type="button"
+                className="btn btn-primary btn-top"
+                disabled={loading}
+                onClick={submitLogin}
+            >
+                {loading ? "Ingresando..." : "Ingresar"}
+            </button>
+
+            <button
+                type="button"
+                className="btn btn-outline-dark btn-bottom"
+                onClick={() => (window.location.href = "/")}
+            >
+                ← Volver al inicio
+            </button>
+        </BtnsContainer>
+    );
+};
+
+Login.Provider = LoginProvider;
 
 export default Login;
