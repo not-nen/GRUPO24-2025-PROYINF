@@ -16,7 +16,7 @@
 
 - [Video primer prototipo](https://usmcl-my.sharepoint.com/:v:/g/personal/acaceres_usm_cl/EbDgcjI5j8RCq2pHBBNNa5cBkJAX_3yPQFF2VGrWmEJ3CQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=9XOcPi)
 
-- [Video, que llevamos implementado](https://usmcl-my.sharepoint.com/:v:/g/personal/acaceres_usm_cl/IQCEsKtfKAQmR6mxM022mqO6AXXb_nUxTss4mDAlX7wMMg8?e=MRtu3h)
+- [Video Hito 5, que llevamos implementado](https://usmcl-my.sharepoint.com/:v:/g/personal/acaceres_usm_cl/IQCEsKtfKAQmR6mxM022mqO6AXXb_nUxTss4mDAlX7wMMg8?e=MRtu3h)
 
 
 ## Instrucciones
@@ -75,6 +75,7 @@ Se necesita:
     - Usuario: admin@admin.com
     - Contraseña: admin
     - DB contraseña: postgres
+
 
 
 
